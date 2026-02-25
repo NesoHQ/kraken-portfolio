@@ -11,13 +11,13 @@ export function Sidebar() {
             <div className="sidebar-info flex items-center gap-[20px] relative lg:block lg:text-center">
                 <div className="relative w-[70px] h-[70px] lg:w-[130px] lg:h-[130px] lg:mx-auto">
                     <figure className="relative bg-card sketch-border w-full h-full overflow-hidden flex items-center justify-center p-1 z-10 group cursor-pointer grayscale group-hover:grayscale-0 transition-all duration-300 group-hover:border-accent">
-                        <img src="/old/assets/images/my-avatar.png" alt="Richard hanrick" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out" />
+                        <img src="/old/assets/images/my-avatar.png" alt="Iqbal Hossain" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out" />
                     </figure>
                 </div>
 
                 <div className="info-content lg:mt-5 text-left lg:text-center">
-                    <h1 className="name text-xl lg:text-3xl font-signature font-bold tracking-tight text-foreground mb-1" title="Richard hanrick">Richard hanrick</h1>
-                    <p className="title bg-accent text-[11px] lg:text-[12px] text-foreground font-bold px-3 py-1 sketch-border w-fit lg:mx-auto tracking-wide uppercase">Web developer</p>
+                    <h1 className="name text-xl lg:text-3xl font-signature font-bold tracking-tight text-foreground mb-1" title="Iqbal Hossain">Iqbal Hossain</h1>
+                    <p className="title bg-accent text-[11px] lg:text-[12px] text-white font-bold px-3 py-1 sketch-border w-fit lg:mx-auto tracking-wide uppercase">Senior Software Engineer</p>
                 </div>
 
                 <button
@@ -33,7 +33,7 @@ export function Sidebar() {
 
                 <ul className="contacts-list space-y-[30px]">
                     {[
-                        { title: "Email", value: "richard@example.com", link: "mailto:richard@example.com", icon: <Mail size={18} /> },
+                        { title: "Email", value: "[EMAIL_ADDRESS]", link: "mailto:[EMAIL_ADDRESS]", icon: <Mail size={18} /> },
                         { title: "Phone", value: "+1 (213) 352-2795", link: "tel:+12133522795", icon: <Smartphone size={18} /> },
                         { title: "Birthday", value: "June 23, 1982", icon: <Calendar size={18} /> },
                         { title: "Location", value: "Sacramento, California, USA", icon: <MapPin size={18} /> }
