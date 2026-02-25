@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Sidebar } from "@/components/Sidebar";
 import { Navbar } from "@/components/Navbar";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { Palette, Code, Smartphone, Camera, User, GraduationCap, Briefcase, PenTool } from "lucide-react";
 
 export default function PortfolioPage() {
   const [activePage, setActivePage] = useState("about");
@@ -40,10 +41,10 @@ export default function PortfolioPage() {
               </h3>
               <ul className="service-list grid grid-cols-1 md:grid-cols-2 gap-[25px]">
                 {[
-                  { title: "Web design", text: "The most modern and high-quality design made at a professional level.", icon: "🎨" },
-                  { title: "Web development", text: "High-quality development of sites at the professional level.", icon: "💻" },
-                  { title: "Mobile apps", text: "Professional development of applications for iOS and Android.", icon: "📱" },
-                  { title: "Photography", text: "I make high-quality photos of any category at a professional level.", icon: "📷" }
+                  { title: "Web design", text: "The most modern and high-quality design made at a professional level.", icon: <Palette size={32} /> },
+                  { title: "Web development", text: "High-quality development of sites at the professional level.", icon: <Code size={32} /> },
+                  { title: "Mobile apps", text: "Professional development of applications for iOS and Android.", icon: <Smartphone size={32} /> },
+                  { title: "Photography", text: "I make high-quality photos of any category at a professional level.", icon: <Camera size={32} /> }
                 ].map((s, idx) => (
                   <li key={idx} className="bg-card p-[20px] sketch-border flex items-start flex-col gap-[15px] hover:translate-x-1 hover:translate-y-1 transition-all duration-300 group relative hover:border-accent-secondary">
                     <div className="text-4xl text-foreground flex-shrink-0 bg-transparent w-12 h-12 flex items-center justify-center grayscale group-hover:grayscale-0 transition-all duration-500">
@@ -64,8 +65,8 @@ export default function PortfolioPage() {
               </h3>
               <ul className="flex gap-6 overflow-x-auto pb-8 scrollbar-hide py-4 snap-x">
                 {[
-                  { name: "Daniel Lewis", text: "Richard was hired to create a corporate identity. We were very pleased with the work...", avatar: "👨‍💻" },
-                  { name: "Jessica Miller", text: "Richard was hired to create a corporate identity. We were very pleased with the work...", avatar: "👩‍💼" }
+                  { name: "Daniel Lewis", text: "Richard was hired to create a corporate identity. We were very pleased with the work...", avatar: <User size={24} /> },
+                  { name: "Jessica Miller", text: "Richard was hired to create a corporate identity. We were very pleased with the work...", avatar: <User size={24} /> }
                 ].map((t, i) => (
                   <li key={i} className="flex-shrink-0 w-full md:w-[48%] bg-card sketch-border p-[20px] relative snap-center duration-300 hover:border-accent">
                     <div className="flex items-center gap-4 mb-4 relative z-10">
@@ -107,8 +108,8 @@ export default function PortfolioPage() {
 
             <section className="timeline mb-12">
               <div className="flex items-center gap-4 mb-6">
-                <div className="w-12 h-12 bg-card sketch-border flex items-center justify-center text-foreground text-2xl grayscale">
-                  🎓
+                <div className="w-12 h-12 bg-card sketch-border flex items-center justify-center text-foreground grayscale">
+                  <GraduationCap size={24} />
                 </div>
                 <h3 className="text-[32px] font-signature font-bold text-foreground">Education</h3>
               </div>
@@ -131,8 +132,8 @@ export default function PortfolioPage() {
 
             <section className="timeline mb-12">
               <div className="flex items-center gap-4 mb-6">
-                <div className="w-12 h-12 bg-card sketch-border flex items-center justify-center text-foreground text-2xl grayscale">
-                  💼
+                <div className="w-12 h-12 bg-card sketch-border flex items-center justify-center text-foreground grayscale">
+                  <Briefcase size={24} />
                 </div>
                 <h3 className="text-[32px] font-signature font-bold text-foreground">Experience</h3>
               </div>
@@ -265,7 +266,7 @@ export default function PortfolioPage() {
                       <figure className="relative overflow-hidden aspect-[1.8/1] border-b-2 border-foreground grayscale group-hover:grayscale-0 transition-all duration-500">
                         <img src={blog.img} alt={blog.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out" />
                         <div className="absolute top-4 left-4 z-20 flex items-center gap-2 bg-foreground px-3 py-1 sketch-border text-[12px] font-bold text-background">
-                          <span className="text-background">✏️</span> {blog.category}
+                          <span className="text-background"><PenTool size={14} /></span> {blog.category}
                         </div>
                       </figure>
                       <div className="p-5 relative">

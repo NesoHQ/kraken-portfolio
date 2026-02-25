@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Mail, Smartphone, Calendar, MapPin, Facebook, Twitter, Instagram } from "lucide-react";
 
 export function Sidebar() {
     const [isActive, setIsActive] = useState(false);
@@ -32,10 +33,10 @@ export function Sidebar() {
 
                 <ul className="contacts-list space-y-[30px]">
                     {[
-                        { title: "Email", value: "richard@example.com", link: "mailto:richard@example.com", icon: "✉️" },
-                        { title: "Phone", value: "+1 (213) 352-2795", link: "tel:+12133522795", icon: "📱" },
-                        { title: "Birthday", value: "June 23, 1982", icon: "🎂" },
-                        { title: "Location", value: "Sacramento, California, USA", icon: "📍" }
+                        { title: "Email", value: "richard@example.com", link: "mailto:richard@example.com", icon: <Mail size={18} /> },
+                        { title: "Phone", value: "+1 (213) 352-2795", link: "tel:+12133522795", icon: <Smartphone size={18} /> },
+                        { title: "Birthday", value: "June 23, 1982", icon: <Calendar size={18} /> },
+                        { title: "Location", value: "Sacramento, California, USA", icon: <MapPin size={18} /> }
                     ].map((contact, idx) => (
                         <li key={idx} className="contact-item flex items-center gap-3 group cursor-pointer">
                             <div className="w-[40px] h-[40px] flex-shrink-0 text-foreground text-lg bg-card sketch-border grayscale group-hover:grayscale-0 flex justify-center items-center group-hover:bg-accent-tertiary group-hover:text-foreground transition-all duration-300">
@@ -56,7 +57,7 @@ export function Sidebar() {
                 <div className="h-[2px] bg-border my-6 object-cover border-b-2 border-dashed"></div>
 
                 <ul className="social-list flex justify-center items-center gap-4">
-                    {[{ id: "fb", icon: "📘" }, { id: "tw", icon: "🐦" }, { id: "ins", icon: "📸" }].map((ic, i) => (
+                    {[{ id: "fb", icon: <Facebook size={18} /> }, { id: "tw", icon: <Twitter size={18} /> }, { id: "ins", icon: <Instagram size={18} /> }].map((ic, i) => (
                         <li key={i} className="social-item">
                             <button className="text-muted hover:text-foreground transition-all duration-300 text-lg p-2 sketch-border hover:bg-foreground hover:text-background active:scale-95 grayscale hover:grayscale-0">
                                 {ic.icon}
