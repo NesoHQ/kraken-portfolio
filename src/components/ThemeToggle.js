@@ -17,7 +17,7 @@ export function ThemeToggle() {
     return (
         <button
             onClick={toggleTheme}
-            className="fixed top-4 right-4 lg:top-8 lg:right-10 z-60 flex items-center justify-center w-12 h-12 lg:w-14 lg:h-14 bg-card border-2 border-foreground sketch-border transition-all duration-300 hover:scale-110 hover:bg-primary-light active:scale-95 group overflow-hidden grayscale hover:grayscale-0 focus:outline-none focus:ring-2 focus:ring-foreground focus:ring-offset-2 focus:ring-offset-background"
+            className="fixed top-4 right-4 lg:top-8 lg:right-10 z-60 flex items-center justify-center w-12 h-12 lg:w-14 lg:h-14 bg-card border-2 border-foreground sketch-border transition-all duration-300 hover:scale-110 hover:bg-primary-light active:scale-95 group overflow-hidden focus:outline-none focus:ring-2 focus:ring-foreground focus:ring-offset-2 focus:ring-offset-background"
             aria-label="Toggle theme"
         >
             <div className="absolute inset-0 bg-foreground opacity-0 group-hover:opacity-5 transition-opacity duration-300"></div>

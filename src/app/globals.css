@@ -1,14 +1,52 @@
 @import "tailwindcss";
 
 /* ============================================
-   SMOOTH THEME TRANSITIONS
+   ANIMATIONS
    ============================================ */
-* {
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  to {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+
+/* ============================================
+   SMOOTH THEME TRANSITIONS - SELECTIVE
+   ============================================ */
+/* Only apply theme transitions to specific properties that change with theme */
+html,
+body,
+main,
+aside,
+nav,
+article,
+section,
+header,
+footer,
+div[class*="bg-"],
+button,
+a,
+input,
+textarea {
   transition: 
-    background-color 500ms cubic-bezier(0.4, 0, 0.2, 1),
-    color 500ms cubic-bezier(0.4, 0, 0.2, 1),
-    border-color 500ms cubic-bezier(0.4, 0, 0.2, 1),
-    box-shadow 500ms cubic-bezier(0.4, 0, 0.2, 1);
+    background-color 400ms cubic-bezier(0.4, 0, 0.2, 1),
+    color 400ms cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 400ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Respect user's motion preferences */
@@ -20,6 +58,17 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
 }
 

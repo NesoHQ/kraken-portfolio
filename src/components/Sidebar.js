@@ -7,10 +7,10 @@ export function Sidebar() {
     const [isActive, setIsActive] = useState(false);
 
     return (
-        <aside className={`bg-sidebar border-2 border-card-border sketch-border paper-pattern p-4 lg:p-6 transition-[max-height] duration-500 ease-in-out relative z-10 lg:sticky lg:top-[60px] lg:mb-0 lg:w-[280px] lg:shrink-0 lg:self-start lg:max-h-[calc(100vh-120px)] lg:overflow-y-auto custom-scrollbar overflow-hidden ${isActive ? 'max-h-[800px]' : 'max-h-[110px]'}`}>
+        <aside className={`bg-sidebar border-2 border-card-border sketch-border paper-pattern p-4 lg:p-6 transition-[max-height] duration-500 ease-in-out relative z-10 lg:sticky lg:top-[60px] lg:mb-0 lg:w-[280px] lg:shrink-0 lg:flex lg:flex-col lg:justify-center lg:max-h-[calc(100vh-120px)] lg:overflow-y-auto custom-scrollbar overflow-hidden ${isActive ? 'max-h-[800px]' : 'max-h-[110px]'}`}>
             <div className="sidebar-info flex items-center gap-[20px] relative lg:block lg:text-center">
                 <div className="relative w-[70px] h-[70px] lg:w-[130px] lg:h-[130px] lg:mx-auto">
-                    <figure className="relative bg-card sketch-border w-full h-full overflow-hidden flex items-center justify-center p-1 z-10 group cursor-pointer grayscale group-hover:grayscale-0 transition-all duration-300 group-hover:bg-primary-light">
+                    <figure className="relative bg-card sketch-border w-full h-full overflow-hidden flex items-center justify-center p-1 z-10 group cursor-pointer transition-all duration-300 group-hover:bg-primary-light">
                         <img src="/old/assets/images/my-avatar.png" alt="Iqbal Hossain" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out" />
                     </figure>
                 </div>
@@ -29,7 +29,7 @@ export function Sidebar() {
             </div>
 
             <div className={`sidebar-info_more ${isActive ? 'block' : 'hidden'} lg:block transition-all duration-500`}>
-                <div className="h-[1px] bg-border my-6"></div>
+                <div className="h-px bg-border my-6"></div>
 
                 {/* Download Resume CTA */}
                 <a 
@@ -51,7 +51,7 @@ export function Sidebar() {
                         { title: "Location", value: "Sacramento, California, USA", icon: <MapPin size={18} /> }
                     ].map((contact, idx) => (
                         <li key={idx} className="contact-item flex items-center gap-3 group cursor-pointer">
-                            <div className="w-[40px] h-[40px] shrink-0 text-foreground text-lg bg-card sketch-border grayscale group-hover:grayscale-0 flex justify-center items-center group-hover:bg-primary-light group-hover:text-foreground transition-all duration-300">
+                            <div className="w-[40px] h-[40px] shrink-0 text-foreground text-lg bg-card sketch-border flex justify-center items-center group-hover:bg-primary-light group-hover:text-foreground transition-all duration-300">
                                 {contact.icon}
                             </div>
                             <div className="contact-info text-left overflow-hidden">
@@ -71,7 +71,7 @@ export function Sidebar() {
                 <ul className="social-list flex justify-center items-center gap-4">
                     {[{ id: "fb", icon: <Facebook size={18} /> }, { id: "tw", icon: <Twitter size={18} /> }, { id: "ins", icon: <Instagram size={18} /> }].map((ic, i) => (
                         <li key={i} className="social-item">
-                            <button className="text-muted hover:text-background hover:bg-foreground transition-all duration-300 text-lg p-2 sketch-border active:scale-95 grayscale hover:grayscale-0 focus:outline-none focus:ring-2 focus:ring-foreground focus:ring-offset-2 focus:ring-offset-sidebar">
+                            <button className="text-muted hover:text-background hover:bg-foreground transition-all duration-300 text-lg p-2 sketch-border active:scale-95 focus:outline-none focus:ring-2 focus:ring-foreground focus:ring-offset-2 focus:ring-offset-sidebar">
                                 {ic.icon}
                             </button>
                         </li>
