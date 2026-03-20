@@ -88,25 +88,23 @@ export function ThemeToggle() {
             className={`fixed top-5 right-5 lg:top-8 lg:right-10 z-[60] select-none touch-none outline-none ${dragging ? 'cursor-grabbing scale-95' : 'cursor-grab'} transition-transform duration-150`}
         >
             {/* Sketch-style square track */}
-            <div className={`relative flex items-center w-[72px] h-9 border-2 border-dashed p-1 transition-colors duration-300 ${
-                isDark
-                    ? 'bg-foreground border-foreground'
-                    : 'bg-background border-foreground'
+            <div className={`relative flex items-center w-[72px] h-9 border-2 border-dashed border-foreground p-1 transition-colors duration-300 ${
+                isDark ? 'bg-foreground' : 'bg-background'
             }`}>
 
-                {/* Sun icon — left side */}
+                {/* Sun — left, always shown, dims when inactive */}
                 <Sun
                     size={12}
                     className={`absolute left-2 transition-all duration-300 ${
-                        isDark ? 'opacity-30 text-background' : 'opacity-0'
+                        isDark ? 'text-background opacity-40' : 'text-foreground opacity-90'
                     }`}
                 />
 
-                {/* Moon icon — right side */}
+                {/* Moon — right, always shown, dims when inactive */}
                 <Moon
                     size={12}
                     className={`absolute right-2 transition-all duration-300 ${
-                        isDark ? 'opacity-0' : 'opacity-50 text-foreground'
+                        isDark ? 'text-background opacity-90' : 'text-foreground opacity-40'
                     }`}
                 />
 
@@ -116,7 +114,7 @@ export function ThemeToggle() {
                         ? 'translate-x-[34px] bg-background text-foreground'
                         : 'translate-x-0 bg-foreground text-background'
                 }`}>
-                    {isDark ? <Sun size={12} /> : <Moon size={12} />}
+                    {isDark ? <Moon size={12} /> : <Sun size={12} />}
                 </div>
 
                 {/* Offset shadow — sketch feel */}
