@@ -22,11 +22,9 @@ export function ThemeToggle() {
         }
     }, [mounted]);
 
-    const getSize = () => ({ w: btnRef.current?.offsetWidth ?? 64, h: btnRef.current?.offsetHeight ?? 32 });
-
     const snapToSide = (currentX, currentY) => {
-        const w = btnRef.current?.offsetWidth ?? 64;
-        const h = btnRef.current?.offsetHeight ?? 32;
+        const w = btnRef.current?.offsetWidth ?? 72;
+        const h = btnRef.current?.offsetHeight ?? 36;
         const midX = window.innerWidth / 2;
         const snappedX = currentX + w / 2 < midX ? 12 : window.innerWidth - w - 12;
         const clampedY = Math.min(Math.max(currentY, 12), window.innerHeight - h - 12);
@@ -50,8 +48,8 @@ export function ThemeToggle() {
         const dx = e.clientX - dragStart.current.startX;
         const dy = e.clientY - dragStart.current.startY;
         if (Math.abs(dx) > 4 || Math.abs(dy) > 4) dragStart.current.moved = true;
-        const w = btnRef.current?.offsetWidth ?? 64;
-        const h = btnRef.current?.offsetHeight ?? 32;
+        const w = btnRef.current?.offsetWidth ?? 72;
+        const h = btnRef.current?.offsetHeight ?? 36;
         setPos({
             x: Math.min(Math.max(dragStart.current.originX + dx, 0), window.innerWidth - w),
             y: Math.min(Math.max(dragStart.current.originY + dy, 0), window.innerHeight - h),
@@ -87,29 +85,44 @@ export function ThemeToggle() {
             style={style}
             role="button"
             aria-label="Toggle theme"
-            className={`fixed top-5 right-5 lg:top-8 lg:right-10 z-[60] select-none touch-none outline-none ${dragging ? 'cursor-grabbing' : 'cursor-grab'}`}
+            className={`fixed top-5 right-5 lg:top-8 lg:right-10 z-[60] select-none touch-none outline-none ${dragging ? 'cursor-grabbing scale-95' : 'cursor-grab'} transition-transform duration-150`}
         >
-            {/* Pill track */}
-            <div className={`relative flex items-center w-16 h-8 rounded-full p-1 transition-colors duration-300 ${isDark ? 'bg-foreground' : 'bg-foreground/10 border border-foreground/20'}`}>
-                {/* Icons */}
+            {/* Sketch-style square track */}
+            <div className={`relative flex items-center w-[72px] h-9 border-2 border-dashed p-1 transition-colors duration-300 ${
+                isDark
+                    ? 'bg-foreground border-foreground'
+                    : 'bg-background border-foreground'
+            }`}>
+
+                {/* Sun icon — left side */}
                 <Sun
-                    size={13}
-                    className={`absolute left-2 transition-opacity duration-300 ${isDark ? 'opacity-30 text-background' : 'opacity-0'}`}
-                />
-                <Moon
-                    size={13}
-                    className={`absolute right-2 transition-opacity duration-300 ${isDark ? 'opacity-0' : 'opacity-40 text-foreground'}`}
-                />
-                {/* Sliding knob */}
-                <div
-                    className={`relative z-10 w-6 h-6 rounded-full flex items-center justify-center transition-all duration-300 ${
-                        isDark
-                            ? 'translate-x-8 bg-background text-foreground'
-                            : 'translate-x-0 bg-foreground text-background'
+                    size={12}
+                    className={`absolute left-2 transition-all duration-300 ${
+                        isDark ? 'opacity-30 text-background' : 'opacity-0'
                     }`}
-                >
+                />
+
+                {/* Moon icon — right side */}
+                <Moon
+                    size={12}
+                    className={`absolute right-2 transition-all duration-300 ${
+                        isDark ? 'opacity-0' : 'opacity-50 text-foreground'
+                    }`}
+                />
+
+                {/* Square sliding knob */}
+                <div className={`relative z-10 w-6 h-6 flex items-center justify-center transition-all duration-300 ${
+                    isDark
+                        ? 'translate-x-[34px] bg-background text-foreground'
+                        : 'translate-x-0 bg-foreground text-background'
+                }`}>
                     {isDark ? <Sun size={12} /> : <Moon size={12} />}
                 </div>
+
+                {/* Offset shadow — sketch feel */}
+                <div className={`absolute inset-0 translate-x-[3px] translate-y-[3px] -z-10 transition-colors duration-300 ${
+                    isDark ? 'bg-foreground/20' : 'bg-foreground/10'
+                }`} />
             </div>
         </div>
     );
