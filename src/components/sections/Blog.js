@@ -193,16 +193,16 @@ export function Blog() {
                 </div>
               </button>
 
-              {/* Open in new tab — appears on hover */}
+              {/* Open in new tab — slides down from top-right on hover */}
               <a
                 href={`/blog/${blog._id}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                title="Open in new tab"
                 onClick={e => e.stopPropagation()}
-                className="absolute top-3 right-3 z-30 p-1.5 bg-foreground text-background sketch-border opacity-0 group-hover:opacity-100 transition-all duration-200 hover:scale-110 active:scale-95"
+                className="absolute top-3 right-3 z-30 flex items-center gap-1.5 bg-foreground text-background px-3 py-1.5 sketch-border text-[11px] font-bold tracking-widest uppercase opacity-0 -translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200 hover:bg-primary-hover active:scale-95 whitespace-nowrap"
               >
-                <ExternalLink size={12} />
+                <ExternalLink size={11} />
+                Open in new tab
               </a>
             </li>
           ))}
