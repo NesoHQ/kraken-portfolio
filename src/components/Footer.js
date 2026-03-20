@@ -26,7 +26,7 @@ export function Footer() {
           <span className="text-card-border">·</span>
           <a href="https://linkedin.com/in/geomachine" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors duration-200">LinkedIn</a>
           <span className="text-card-border">·</span>
-          <a href="https://nesohq.org" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors duration-200">NesoHQ</a>
+          <a href="https://github.com/NesoHQ" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors duration-200">NesoHQ</a>
         </div>
 
       </div>

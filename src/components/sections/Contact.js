@@ -88,13 +88,13 @@ export function Contact() {
         </h3>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <input type="text" name="fullname" className="w-full bg-background border-2 border-dashed border-foreground sketch-border px-4 py-3 text-base text-foreground outline-none focus:bg-primary-light transition-all placeholder:text-muted focus:ring-2 focus:ring-foreground focus:ring-offset-2" placeholder="Full name" required />
+            <input type="text" name="fullname" className="w-full bg-background border-2 border-dashed border-foreground sketch-border px-4 py-3 text-base text-foreground outline-none focus:bg-primary-light transition-all placeholder:text-muted" placeholder="Full name" required />
           <div className="flex flex-col gap-1">
-              <input type="email" name="email" onBlur={handleEmailBlur} onChange={() => setEmailError('')} className={`w-full bg-background border-2 border-dashed sketch-border px-4 py-3 text-base text-foreground outline-none focus:bg-primary-light transition-all placeholder:text-muted focus:ring-2 focus:ring-foreground focus:ring-offset-2 ${emailError ? 'border-red-500' : 'border-foreground'}`} placeholder="Email address" required />
+              <input type="email" name="email" onBlur={handleEmailBlur} onChange={() => setEmailError('')} className={`w-full bg-background border-2 border-dashed sketch-border px-4 py-3 text-base text-foreground outline-none focus:bg-primary-light transition-all placeholder:text-muted ${emailError ? 'border-red-500' : 'border-foreground'}`} placeholder="Email address" required />
               {emailError && <p className="text-xs text-red-500 font-medium">{emailError}</p>}
             </div>
           </div>
-          <textarea name="message" className="w-full bg-background border-2 border-dashed border-foreground sketch-border px-4 py-4 text-base text-foreground outline-none focus:bg-primary-light transition-all min-h-[120px] placeholder:text-muted resize-none focus:ring-2 focus:ring-foreground focus:ring-offset-2" placeholder="Your Message" required />
+          <textarea name="message" className="w-full bg-background border-2 border-dashed border-foreground sketch-border px-4 py-4 text-base text-foreground outline-none focus:bg-primary-light transition-all min-h-[120px] placeholder:text-muted resize-none" placeholder="Your Message" required />
 
           {status === 'sent' && <p className="text-sm font-bold text-foreground bg-primary-light px-4 py-3 sketch-border">✓ Message sent! I&apos;ll get back to you soon.</p>}
           {status === 'error' && <p className="text-sm font-bold text-red-500 bg-red-500/10 px-4 py-3 sketch-border">Something went wrong. Please try again.</p>}
