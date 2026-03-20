@@ -22,7 +22,10 @@ export function Portfolio({ filter, setFilter }) {
   useEffect(() => {
     fetch('/api/projects')
       .then(r => r.json())
-      .then(j => { if (j.data?.length) setProjects(j.data); })
+      .then(j => {
+        const items = j.data;
+        if (Array.isArray(items) && items.length) setProjects(items);
+      })
       .catch(() => {});
   }, []);
 
