@@ -85,41 +85,43 @@ export function ThemeToggle() {
             style={style}
             role="button"
             aria-label="Toggle theme"
-            className={`fixed top-5 right-5 lg:top-8 lg:right-10 z-[60] select-none touch-none outline-none ${dragging ? 'cursor-grabbing scale-95' : 'cursor-grab'} transition-transform duration-150`}
+            className={`group fixed top-5 right-5 lg:top-8 lg:right-10 z-[60] select-none touch-none outline-none ${dragging ? 'cursor-grabbing scale-95' : 'cursor-grab hover:scale-105 active:scale-95'} transition-all duration-300`}
         >
-            {/* Sketch-style square track */}
-            <div className={`relative flex items-center w-[72px] h-9 border-2 border-dashed border-foreground p-1 transition-colors duration-300 ${
-                isDark ? 'bg-foreground' : 'bg-background'
-            }`}>
+            {/* Premium Pill Track */}
+            <div className={`relative flex items-center w-[76px] h-10 rounded-full p-1 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${
+                isDark 
+                    ? 'bg-[#171717] border border-[#333333] shadow-[inset_0px_2px_8px_rgba(0,0,0,0.5)]' 
+                    : 'bg-[#F0F0F0] border border-[#E5E5E5] shadow-[inset_0px_2px_8px_rgba(200,200,200,0.3)]'
+            } group-hover:shadow-[0_0_15px_rgba(150,150,150,0.2)] dark:group-hover:shadow-[0_0_15px_rgba(255,255,255,0.1)]`}>
 
-                {/* Sun — left, always shown, dims when inactive */}
-                <Sun
-                    size={12}
-                    className={`absolute left-2 transition-all duration-300 ${
-                        isDark ? 'text-background opacity-40' : 'text-foreground opacity-90'
-                    }`}
-                />
+                {/* Sliding Pill Indicator */}
+                <div className={`absolute left-1 top-1 bottom-1 w-[32px] rounded-full shadow-md transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${
+                    isDark 
+                        ? 'translate-x-[34px] bg-[#333333] shadow-black/80 border border-[#404040]' 
+                        : 'translate-x-0 bg-white shadow-gray-300/80 border border-white'
+                }`} />
 
-                {/* Moon — right, always shown, dims when inactive */}
-                <Moon
-                    size={12}
-                    className={`absolute right-2 transition-all duration-300 ${
-                        isDark ? 'text-background opacity-90' : 'text-foreground opacity-40'
-                    }`}
-                />
-
-                {/* Square sliding knob */}
-                <div className={`relative z-10 w-6 h-6 flex items-center justify-center transition-all duration-300 ${
-                    isDark
-                        ? 'translate-x-[34px] bg-background text-foreground'
-                        : 'translate-x-0 bg-foreground text-background'
-                }`}>
-                    {isDark ? <Moon size={12} /> : <Sun size={12} />}
+                {/* Icons Container */}
+                <div className="relative z-10 flex items-center justify-between w-full px-[5px] pointer-events-none">
+                    <Sun
+                        size={15}
+                        className={`transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${
+                            isDark ? 'text-gray-500 scale-90 opacity-60' : 'text-[#333333] scale-110 opacity-100 drop-shadow-sm'
+                        }`}
+                        strokeWidth={isDark ? 2 : 2.5}
+                    />
+                    <Moon
+                        size={15}
+                        className={`transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${
+                            isDark ? 'text-white scale-110 opacity-100 drop-shadow-[0_0_4px_rgba(255,255,255,0.6)]' : 'text-gray-400 scale-90 opacity-60'
+                        }`}
+                        strokeWidth={isDark ? 2.5 : 2}
+                    />
                 </div>
-
-                {/* Offset shadow — sketch feel */}
-                <div className={`absolute inset-0 translate-x-[3px] translate-y-[3px] -z-10 transition-colors duration-300 ${
-                    isDark ? 'bg-foreground/20' : 'bg-foreground/10'
+                
+                {/* Glow Ring effect on drag */}
+                <div className={`absolute inset-0 rounded-full opacity-0 pointer-events-none transition-opacity duration-300 ${
+                    dragging ? 'opacity-100 ring-2 ring-primary/30' : ''
                 }`} />
             </div>
         </div>
