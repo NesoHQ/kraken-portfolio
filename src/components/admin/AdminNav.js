@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { LogOut, LayoutDashboard, User, Briefcase, FileText, MessageSquare, FolderKanban, Menu, X, ExternalLink } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ThemeToggle } from '@/components/ThemeToggle';
 
 const navItems = [
@@ -23,11 +23,20 @@ export default function AdminNav() {
 
   const isLoginPage = pathname === '/admin/login';
 
+  // Reset loggingOut whenever pathname changes — covers the case where
+  // the user logs back in and the component is still mounted with stale state
+  useEffect(() => {
+    setLoggingOut(false);
+  }, [pathname]);
+
   const handleLogout = async () => {
     setLoggingOut(true);
-    await fetch('/api/auth/logout', { method: 'POST' });
-    router.push('/admin/login');
-    router.refresh();
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' });
+    } finally {
+      router.push('/admin/login');
+      router.refresh();
+    }
   };
 
   const isActive = (href) =>
@@ -66,6 +75,7 @@ export default function AdminNav() {
         {/* Sidebar footer */}
         <div className="px-3 py-4 border-t-2 border-dashed border-card-border space-y-1">
           <Link
+            target='_'
             href="/"
             className="flex items-center gap-3 px-3 py-2.5 w-full text-sm font-bold text-muted hover:text-foreground hover:bg-primary-light transition-colors"
           >
@@ -79,9 +89,9 @@ export default function AdminNav() {
             <LogOut size={16} />
             {loggingOut ? 'Logging out...' : 'Logout'}
           </button>
-          <p className="text-[10px] text-muted text-center pt-2 tracking-widest uppercase">
+          {/* <p className="text-[10px] text-muted text-center pt-2 tracking-widest uppercase">
             © {new Date().getFullYear()} Iqbal Hossain
-          </p>
+          </p> */}
         </div>
       </aside>
 
