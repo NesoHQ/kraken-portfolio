@@ -189,7 +189,7 @@ export function Blog() {
               onClick={() => setSelected(idx)}
               className="block w-full text-left bg-card sketch-border overflow-hidden hover:translate-x-1 hover:translate-y-1 transition-all duration-300 hover:bg-primary-light"
             >
-              <figure className="relative overflow-hidden aspect-[1.8/1] border-b-2 border-card-border">
+              <figure className="relative overflow-hidden aspect-[1.8/1] border-b-2 border-dashed border-card-border">
                 <img src={blog.img} alt={blog.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out" />
                 <div className="absolute top-4 left-4 z-20 flex items-center gap-2 bg-foreground px-3 py-1 sketch-border text-xs font-bold text-background">
                   <PenTool size={14} /> {blog.category}

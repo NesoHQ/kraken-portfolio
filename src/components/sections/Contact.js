@@ -39,7 +39,7 @@ export function Contact() {
           <iframe
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d233668.3263788778!2d90.27923950507813!3d23.780573000000007!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755b8b087026b81%3A0x8fa563bbdd5904c2!2sDhaka%2C%20Bangladesh!5e0!3m2!1sen!2sbd!4v1700000000000!5m2!1sen!2sbd"
             width="600" height="450" loading="lazy"
-            className="w-full h-full border-2 border-foreground"
+            className="w-full h-full border-2 border-dashed border-foreground"
           />
         </figure>
       </section>
@@ -50,10 +50,10 @@ export function Contact() {
         </h3>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <input type="text" name="fullname" className="w-full bg-background border-2 border-foreground sketch-border px-4 py-3 text-base text-foreground outline-none focus:bg-primary-light transition-all placeholder:text-muted focus:ring-2 focus:ring-foreground focus:ring-offset-2" placeholder="Full name" required />
-            <input type="email" name="email" className="w-full bg-background border-2 border-foreground sketch-border px-4 py-3 text-base text-foreground outline-none focus:bg-primary-light transition-all placeholder:text-muted focus:ring-2 focus:ring-foreground focus:ring-offset-2" placeholder="Email address" required />
+            <input type="text" name="fullname" className="w-full bg-background border-2 border-dashed border-foreground sketch-border px-4 py-3 text-base text-foreground outline-none focus:bg-primary-light transition-all placeholder:text-muted focus:ring-2 focus:ring-foreground focus:ring-offset-2" placeholder="Full name" required />
+            <input type="email" name="email" className="w-full bg-background border-2 border-dashed border-foreground sketch-border px-4 py-3 text-base text-foreground outline-none focus:bg-primary-light transition-all placeholder:text-muted focus:ring-2 focus:ring-foreground focus:ring-offset-2" placeholder="Email address" required />
           </div>
-          <textarea name="message" className="w-full bg-background border-2 border-foreground sketch-border px-4 py-4 text-base text-foreground outline-none focus:bg-primary-light transition-all min-h-[120px] placeholder:text-muted resize-none focus:ring-2 focus:ring-foreground focus:ring-offset-2" placeholder="Your Message" required />
+          <textarea name="message" className="w-full bg-background border-2 border-dashed border-foreground sketch-border px-4 py-4 text-base text-foreground outline-none focus:bg-primary-light transition-all min-h-[120px] placeholder:text-muted resize-none focus:ring-2 focus:ring-foreground focus:ring-offset-2" placeholder="Your Message" required />
 
           {status === 'sent' && <p className="text-sm font-bold text-foreground bg-primary-light px-4 py-3 sketch-border">✓ Message sent! I&apos;ll get back to you soon.</p>}
           {status === 'error' && <p className="text-sm font-bold text-red-500 bg-red-500/10 px-4 py-3 sketch-border">Something went wrong. Please try again.</p>}

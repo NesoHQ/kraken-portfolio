@@ -51,7 +51,7 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body
-        className={`${spaceMono.variable} ${caveat.variable} font-mono antialiased bg-background text-foreground transition-colors duration-500 min-h-screen relative overflow-x-hidden selection:bg-foreground selection:text-background`}
+        className={`${spaceMono.variable} ${caveat.variable} font-mono antialiased bg-background text-foreground transition-colors duration-500 min-h-screen relative overflow-x-hidden selection:bg-foreground selection:text-background paper-pattern`}
       >
         <ThemeProvider>
           {children}

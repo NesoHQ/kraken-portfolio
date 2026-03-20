@@ -125,7 +125,7 @@ html {
   --text-muted: var(--text-secondary);
 
   /* Paper texture for sketch aesthetic */
-  --paper-texture: radial-gradient(#E5E5E5 0.8px, transparent 0.8px);
+  --paper-texture: radial-gradient(#D4D4D4 1px, transparent 1px);
 }
 
 [data-theme='dark'] {
@@ -171,7 +171,7 @@ html {
   --text-muted: var(--text-secondary);
 
   /* Paper texture for sketch aesthetic */
-  --paper-texture: radial-gradient(#262626 0.8px, transparent 0.8px);
+  --paper-texture: radial-gradient(#333333 1px, transparent 1px);
 }
 
 @theme inline {
@@ -222,7 +222,7 @@ html {
 
 @utility paper-pattern {
   background-image: var(--paper-texture);
-  background-size: 20px 20px;
+  background-size: 24px 24px;
 }
 
 @utility highlight-yellow {

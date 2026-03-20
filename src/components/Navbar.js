@@ -4,7 +4,7 @@ export function Navbar({ activePage, setActivePage }) {
     const navItems = ["About", "Resume", "Portfolio", "Blog", "Contact"];
 
     return (
-        <nav className="fixed bottom-0 left-0 right-0 bg-card border-t-2 border-foreground z-50 lg:static lg:border-t-0 lg:border-b-2 lg:mb-8 lg:bg-transparent">
+        <nav className="fixed bottom-0 left-0 right-0 bg-card border-t-2 border-dashed border-foreground z-50 lg:static lg:border-t-0 lg:border-b-2 lg:border-dashed lg:mb-8 lg:bg-transparent">
             <ul className="flex justify-around items-center lg:justify-start lg:gap-10 px-1 lg:px-0">
                 {navItems.map(item => {
                     const isActive = activePage === item.toLowerCase();
