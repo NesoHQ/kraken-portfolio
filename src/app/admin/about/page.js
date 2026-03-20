@@ -33,12 +33,31 @@ export default function AdminAboutPage() {
     });
   }, []);
 
-  const save = async () => {
+  const save = async (override) => {
+    const raw = override ?? data;
+    const payload = {
+      name: raw.name || '',
+      title: raw.title || '',
+      avatar: raw.avatar || '',
+      bio: (raw.bio || []).map(p => String(p || '')),
+      email: raw.email || '',
+      phone: raw.phone || '',
+      location: raw.location || '',
+      linkedin: raw.linkedin || '',
+      github: raw.github || '',
+      githubOrg: raw.githubOrg || '',
+      services: (raw.services || []).map(s => ({
+        title: s.title || '', text: s.text || '', icon: s.icon || '',
+      })),
+      techStack: (raw.techStack || []).map(t => ({
+        label: t.label || '', value: t.value || '',
+      })),
+    };
     setSaving(true);
     const res = await fetch('/api/about', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
+      body: JSON.stringify(payload),
     });
     setSaving(false);
     if (res.ok) toast.show('Changes saved.');
@@ -46,6 +65,12 @@ export default function AdminAboutPage() {
   };
 
   const set = (key, val) => setData(d => ({ ...d, [key]: val }));
+
+  const deleteItem = (key, i) => {
+    const next = { ...data, [key]: data[key].filter((_, j) => j !== i) };
+    setData(next);
+    save(next);
+  };
 
   if (loading) return <div className="py-16 text-center text-muted"><Loader2 size={24} className="animate-spin mx-auto" /></div>;
 
@@ -81,7 +106,7 @@ export default function AdminAboutPage() {
             <Textarea value={p} rows={2} onChange={e => {
               const bio = [...data.bio]; bio[i] = e.target.value; set('bio', bio);
             }} placeholder={`Paragraph ${i + 1}`} className="flex-1" />
-            <button onClick={() => set('bio', data.bio.filter((_, j) => j !== i))} className="text-muted hover:text-red-500 transition-colors shrink-0 mt-1"><Trash2 size={15} /></button>
+            <button type="button" onClick={() => deleteItem('bio', i)} className="text-muted hover:text-red-500 transition-colors shrink-0 mt-1"><Trash2 size={15} /></button>
           </div>
         ))}
         <Btn variant="ghost" onClick={() => set('bio', [...(data.bio || []), ''])}><Plus size={14} /> Add Paragraph</Btn>
@@ -107,7 +132,7 @@ export default function AdminAboutPage() {
         <h2 className="font-signature font-bold text-lg text-foreground border-b border-card-border pb-2">Services</h2>
         {(data.services || []).map((s, i) => (
           <div key={i} className="border border-card-border p-4 space-y-3 relative">
-            <button onClick={() => set('services', data.services.filter((_, j) => j !== i))} className="absolute top-3 right-3 text-muted hover:text-red-500 transition-colors"><Trash2 size={14} /></button>
+            <button type="button" onClick={() => deleteItem('services', i)} className="absolute top-3 right-3 text-muted hover:text-red-500 transition-colors"><Trash2 size={14} /></button>
             <div className="grid grid-cols-2 gap-3">
               <Field label="Title"><Input value={s.title} onChange={e => { const sv = [...data.services]; sv[i] = { ...sv[i], title: e.target.value }; set('services', sv); }} /></Field>
               <Field label="Icon"><Input value={s.icon} onChange={e => { const sv = [...data.services]; sv[i] = { ...sv[i], icon: e.target.value }; set('services', sv); }} placeholder="Server, Globe..." /></Field>
@@ -122,10 +147,14 @@ export default function AdminAboutPage() {
       <section className="bg-card border-2 border-card-border p-6 space-y-4">
         <h2 className="font-signature font-bold text-lg text-foreground border-b border-card-border pb-2">Tech Stack</h2>
         {(data.techStack || []).map((t, i) => (
-          <div key={i} className="flex gap-3 items-start">
-            <Input value={t.label} onChange={e => { const ts = [...data.techStack]; ts[i] = { ...ts[i], label: e.target.value }; set('techStack', ts); }} placeholder="Label" className="w-32 shrink-0" />
-            <Input value={t.value} onChange={e => { const ts = [...data.techStack]; ts[i] = { ...ts[i], value: e.target.value }; set('techStack', ts); }} placeholder="Golang, TypeScript..." className="flex-1" />
-            <button onClick={() => set('techStack', data.techStack.filter((_, j) => j !== i))} className="text-muted hover:text-red-500 transition-colors mt-2 shrink-0"><Trash2 size={14} /></button>
+          <div key={i} className="grid grid-cols-[140px_1fr_auto] gap-3 items-end">
+            <Field label={i === 0 ? 'Category' : undefined}>
+              <Input value={t.label} onChange={e => { const ts = [...data.techStack]; ts[i] = { ...ts[i], label: e.target.value }; set('techStack', ts); }} placeholder="e.g. Languages" />
+            </Field>
+            <Field label={i === 0 ? 'Technologies' : undefined}>
+              <Input value={t.value} onChange={e => { const ts = [...data.techStack]; ts[i] = { ...ts[i], value: e.target.value }; set('techStack', ts); }} placeholder="Golang, TypeScript..." />
+            </Field>
+            <button type="button" onClick={() => deleteItem('techStack', i)} className="text-muted hover:text-red-500 transition-colors mb-2 shrink-0"><Trash2 size={14} /></button>
           </div>
         ))}
         <Btn variant="ghost" onClick={() => set('techStack', [...(data.techStack || []), { label: '', value: '' }])}><Plus size={14} /> Add Row</Btn>

@@ -29,16 +29,42 @@ export default function AdminResumePage() {
     });
   }, []);
 
-  const save = async () => {
+  const save = async (override) => {
+    const raw = override ?? data;
+    // Sanitize: only keep plain serializable fields
+    const payload = {
+      experience: (raw.experience || []).map(e => ({
+        title: e.title || '',
+        company: e.company || '',
+        period: e.period || '',
+        points: (e.points || []).map(p => String(p || '')),
+      })),
+      infraProjects: (raw.infraProjects || []).map(p => ({
+        title: p.title || '',
+        period: p.period || '',
+        text: p.text || '',
+      })),
+      skills: (raw.skills || []).map(s => ({
+        category: s.category || '',
+        tags: (s.tags || []).map(t => String(t || '')),
+      })),
+    };
     setSaving(true);
     const res = await fetch('/api/resume', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
+      body: JSON.stringify(payload),
     });
     setSaving(false);
-    if (res.ok) toast.show('Resume saved.');
+    if (res.ok) toast.show('Saved.');
     else toast.show('Failed to save.', 'error');
+  };
+
+  // Delete an item from a list key, persist immediately
+  const deleteItem = (key, i) => {
+    const next = { ...data, [key]: data[key].filter((_, j) => j !== i) };
+    setData(next);
+    save(next);
   };
 
   const setExp = (i, key, val) => {
@@ -79,7 +105,7 @@ export default function AdminResumePage() {
         <h2 className="font-signature font-bold text-lg text-foreground border-b border-card-border pb-2">Work Experience</h2>
         {data.experience.map((exp, i) => (
           <div key={i} className="border border-card-border p-4 space-y-3 relative">
-            <button onClick={() => setData(d => ({ ...d, experience: d.experience.filter((_, j) => j !== i) }))} className="absolute top-3 right-3 text-muted hover:text-red-500 transition-colors"><Trash2 size={14} /></button>
+            <button type="button" onClick={() => deleteItem('experience', i)} className="absolute top-3 right-3 text-muted hover:text-red-500 transition-colors"><Trash2 size={14} /></button>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <Field label="Job Title"><Input value={exp.title} onChange={e => setExp(i, 'title', e.target.value)} /></Field>
               <Field label="Company"><Input value={exp.company} onChange={e => setExp(i, 'company', e.target.value)} /></Field>
@@ -90,7 +116,7 @@ export default function AdminResumePage() {
                 {exp.points.map((pt, pi) => (
                   <div key={pi} className="flex gap-2">
                     <Input value={pt} onChange={e => setPoint(i, pi, e.target.value)} placeholder={`Point ${pi + 1}`} className="flex-1" />
-                    <button onClick={() => setExp(i, 'points', exp.points.filter((_, j) => j !== pi))} className="text-muted hover:text-red-500 transition-colors shrink-0"><Trash2 size={14} /></button>
+                    <button type="button" onClick={() => setExp(i, 'points', exp.points.filter((_, j) => j !== pi))} className="text-muted hover:text-red-500 transition-colors shrink-0"><Trash2 size={14} /></button>
                   </div>
                 ))}
                 <Btn variant="ghost" onClick={() => setExp(i, 'points', [...exp.points, ''])}><Plus size={12} /> Add Point</Btn>
@@ -108,7 +134,7 @@ export default function AdminResumePage() {
         <h2 className="font-signature font-bold text-lg text-foreground border-b border-card-border pb-2">Cloud & Infra Projects</h2>
         {data.infraProjects.map((proj, i) => (
           <div key={i} className="border border-card-border p-4 space-y-3 relative">
-            <button onClick={() => setData(d => ({ ...d, infraProjects: d.infraProjects.filter((_, j) => j !== i) }))} className="absolute top-3 right-3 text-muted hover:text-red-500 transition-colors"><Trash2 size={14} /></button>
+            <button type="button" onClick={() => deleteItem('infraProjects', i)} className="absolute top-3 right-3 text-muted hover:text-red-500 transition-colors"><Trash2 size={14} /></button>
             <div className="grid grid-cols-2 gap-3">
               <Field label="Title"><Input value={proj.title} onChange={e => setProj(i, 'title', e.target.value)} /></Field>
               <Field label="Period"><Input value={proj.period} onChange={e => setProj(i, 'period', e.target.value)} /></Field>
@@ -125,10 +151,14 @@ export default function AdminResumePage() {
       <section className="bg-card border-2 border-card-border p-6 space-y-4">
         <h2 className="font-signature font-bold text-lg text-foreground border-b border-card-border pb-2">Skills</h2>
         {data.skills.map((group, i) => (
-          <div key={i} className="flex gap-3 items-start">
-            <Input value={group.category} onChange={e => setSkill(i, 'category', e.target.value)} placeholder="Category" className="w-40 shrink-0" />
-            <Input value={group.tags?.join(', ')} onChange={e => setSkill(i, 'tags', e.target.value.split(',').map(t => t.trim()).filter(Boolean))} placeholder="tag1, tag2, tag3" className="flex-1" />
-            <button onClick={() => setData(d => ({ ...d, skills: d.skills.filter((_, j) => j !== i) }))} className="text-muted hover:text-red-500 transition-colors mt-2 shrink-0"><Trash2 size={14} /></button>
+          <div key={i} className="grid grid-cols-[160px_1fr_auto] gap-3 items-end">
+            <Field label={i === 0 ? 'Category' : undefined}>
+              <Input value={group.category} onChange={e => setSkill(i, 'category', e.target.value)} placeholder="e.g. Languages" />
+            </Field>
+            <Field label={i === 0 ? 'Tags (comma separated)' : undefined}>
+              <Input value={group.tags?.join(', ')} onChange={e => setSkill(i, 'tags', e.target.value.split(',').map(t => t.trim()).filter(Boolean))} placeholder="Golang, TypeScript, Python..." />
+            </Field>
+            <button type="button" onClick={() => deleteItem('skills', i)} className="text-muted hover:text-red-500 transition-colors mb-2 shrink-0"><Trash2 size={14} /></button>
           </div>
         ))}
         <Btn variant="ghost" onClick={() => setData(d => ({ ...d, skills: [...d.skills, { category: '', tags: [] }] }))}>

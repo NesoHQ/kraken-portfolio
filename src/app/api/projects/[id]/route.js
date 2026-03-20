@@ -8,8 +8,9 @@ export async function PATCH(request, { params }) {
   if (auth) return auth;
   try {
     await connectDB();
+    const { id } = await params;
     const body = await request.json();
-    const project = await Project.findByIdAndUpdate(params.id, body, { new: true }).lean();
+    const project = await Project.findByIdAndUpdate(id, body, { new: true }).lean();
     if (!project) return errorResponse('Not found', 404);
     return successResponse(project);
   } catch (e) {
@@ -22,7 +23,8 @@ export async function DELETE(request, { params }) {
   if (auth) return auth;
   try {
     await connectDB();
-    await Project.findByIdAndDelete(params.id);
+    const { id } = await params;
+    await Project.findByIdAndDelete(id);
     return successResponse({ deleted: true });
   } catch {
     return errorResponse('Failed to delete', 500);
