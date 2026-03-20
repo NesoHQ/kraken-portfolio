@@ -117,14 +117,15 @@ export default function PortfolioPage() {
                 <div className="w-12 h-12 bg-card sketch-border flex items-center justify-center text-foreground">
                   <GraduationCap size={24} />
                 </div>
-                <h3 className="text-3xl lg:text-4xl font-signature font-bold text-foreground">Education</h3>
+                <h3 className="text-3xl lg:text-4xl font-signature font-bold text-foreground">Cloud & Infra Projects</h3>
               </div>
 
               <ol className="ml-6 border-l-2 border-foreground border-dashed pl-8 space-y-10 relative">
                 {[
-                  { title: "University school of the arts", period: "2007 — 2008", text: "Nemo enims ipsam voluptatem, blanditiis praesentium voluptum delenit atque corrupti, quos dolores et quas molestias exceptur." },
-                  { title: "New york academy of art", period: "2006 — 2007", text: "Ratione voluptatem sequi nesciunt, facere quisquams menda ossimus, omnis voluptas assumenda est omnis.." },
-                  { title: "High school of art and design", period: "2002 — 2004", text: "Duis aute irure dolor in reprehenderit in voluptate, quila voluptas mag odit aut fugit, sed consequuntur magni dolores eos." }
+                  { title: "Private Hybrid Cloud — NesoHQ", period: "2022 — Present", text: "Designed and operated private hybrid cloud using self-hosted Headscale and Caddy reverse proxy for cost-efficient, secure networking." },
+                  { title: "Multi-node K3s Kubernetes Clusters", period: "2023 — Present", text: "Deployed and managed multi-node K3s clusters across geographically distributed nodes for production-grade lightweight Kubernetes." },
+                  { title: "Infrastructure-as-Code Pipeline", period: "2024 — Present", text: "Implemented complete IaC pipeline using Terraform and Kustomization for declarative infrastructure management and automated provisioning." },
+                  { title: "Observability Platform", period: "2024 — Present", text: "Built Prometheus and Grafana observability platform for real-time metrics, visualization, and alerting across distributed workloads." },
                 ].map((item, idx) => (
                   <li key={idx} className="relative group">
                     <div className="absolute -left-[41px] top-[6px] w-[18px] h-[18px] bg-background border-[3px] border-foreground group-hover:bg-foreground transition-all duration-300"></div>
@@ -146,15 +147,26 @@ export default function PortfolioPage() {
 
               <ol className="ml-6 border-l-2 border-foreground border-dashed pl-8 space-y-10 relative">
                 {[
-                  { title: "Creative director", period: "2015 — Present", text: "Nemo enim ipsam voluptatem blanditiis praesentium voluptum delenit atque corrupti, quos dolores et qvuas molestias exceptur." },
-                  { title: "Art director", period: "2013 — 2015", text: "Nemo enims ipsam voluptatem, blanditiis praesentium voluptum delenit atque corrupti, quos dolores et quas molestias exceptur." },
-                  { title: "Web designer", period: "2010 — 2013", text: "Nemo enims ipsam voluptatem, blanditiis praesentium voluptum delenit atque corrupti, quos dolores et quas molestias exceptur." }
+                  { title: "Senior Software Engineer & Backend Lead", company: "Zalmi Technology", location: "Dhaka, Bangladesh", period: "Jan 2026 — Present", points: ["Leading backend engineering team and infrastructure architecture for a platform serving 1M+ users.", "Architecting cloud-native infrastructure with Docker and Kubernetes, ensuring 99.9% uptime.", "Implementing infrastructure-as-code with Terraform for reproducible deployments.", "Driving DevOps culture and CI/CD automation for rapid, reliable releases."] },
+                  { title: "Software Engineer", company: "Technonext (US-Bangla Airlines Concern)", location: "Dhaka, Bangladesh", period: "Apr 2025 — Dec 2025", points: ["Architected Geo Finder Service — a geo-distributed REST API with sub-100ms latency via Redis caching.", "Containerized microservices with Docker & Kubernetes, implementing zero-downtime rolling updates.", "Built CI/CD pipelines with GitHub Actions and Jenkins, reducing deployment time by 70%."] },
+                  { title: "Software Engineer", company: "ShareTrip Ltd.", location: "Dhaka, Bangladesh", period: "Feb 2024 — Mar 2025", points: ["Managed infrastructure for large-scale travel platform with load balancing and auto-scaling.", "Built automated scheduling service using containerized workloads, reducing manual ops by 60%.", "Refactored monolithic workflows into cloud-native microservices."] },
+                  { title: "Junior Software Engineer", company: "Axiata Digital Agency Asia", location: "Dhaka, Bangladesh", period: "Dec 2022 — Jan 2024", points: ["Built omnichannel communication platform handling high-volume transactional messages.", "Developed real-time survey platform serving 10,000+ daily users."] },
                 ].map((item, idx) => (
                   <li key={idx} className="relative group">
                     <div className="absolute -left-[41px] top-[6px] w-[18px] h-[18px] bg-background border-[3px] border-foreground group-hover:bg-foreground transition-all duration-300"></div>
-                    <h4 className="font-signature font-bold text-2xl text-foreground mb-1">{item.title}</h4>
-                    <span className="text-muted text-xs lg:text-sm font-bold tracking-widest block mb-2 uppercase">{item.period}</span>
-                    <p className="text-muted font-light leading-relaxed text-sm lg:text-base">{item.text}</p>
+                    <h4 className="font-signature font-bold text-2xl text-foreground mb-0.5">{item.title}</h4>
+                    <div className="flex flex-wrap items-center gap-2 mb-2">
+                      <span className="text-foreground text-sm font-bold">{item.company}</span>
+                      <span className="text-muted text-xs">·</span>
+                      <span className="text-muted text-xs lg:text-sm font-bold tracking-widest uppercase">{item.period}</span>
+                    </div>
+                    <ul className="space-y-1">
+                      {item.points.map((p, i) => (
+                        <li key={i} className="text-muted font-light leading-relaxed text-sm lg:text-base flex gap-2">
+                          <span className="text-foreground shrink-0 mt-1">—</span>{p}
+                        </li>
+                      ))}
+                    </ul>
                   </li>
                 ))}
               </ol>
@@ -166,10 +178,12 @@ export default function PortfolioPage() {
               </h3>
               <ul className="bg-card p-6 sketch-border space-y-6">
                 {[
-                  { title: "Web design", value: 80 },
-                  { title: "Graphic design", value: 70 },
-                  { title: "Branding", value: 90 },
-                  { title: "WordPress", value: 50 }
+                  { title: "Golang", value: 90 },
+                  { title: "Kubernetes & Docker", value: 88 },
+                  { title: "Terraform / IaC", value: 82 },
+                  { title: "TypeScript", value: 80 },
+                  { title: "AWS & Cloud", value: 78 },
+                  { title: "Observability", value: 85 },
                 ].map((skill, idx) => (
                   <li key={idx}>
                     <div className="flex items-center justify-between mb-2">
