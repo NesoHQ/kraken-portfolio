@@ -23,6 +23,10 @@ const caveat = Caveat({
 export const metadata = {
   title: "kraken - Personal Portfolio",
   description: "THE Kraken's personalised portfolio nextjs application",
+  icons: {
+    icon: '/kraken.png',
+    apple: '/kraken.png',
+  },
 };
 
 export default function RootLayout({ children }) {
