@@ -1,23 +1,26 @@
 import "./globals.css";
-import "@fontsource/inter/300.css";
-import "@fontsource/inter/400.css";
-import "@fontsource/inter/500.css";
-import "@fontsource/inter/600.css";
-import "@fontsource/inter/700.css";
 import { ThemeProvider } from "../components/ThemeProvider";
-import { Caveat, Space_Mono } from 'next/font/google';
+import { Plus_Jakarta_Sans, Outfit, Fira_Code } from 'next/font/google';
 
-const spaceMono = Space_Mono({
-  weight: ['400', '700'],
+const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
-  variable: '--font-space-mono',
+  variable: '--font-jakarta',
   display: 'swap',
+  weight: ['300', '400', '500', '600'],
 });
 
-const caveat = Caveat({
+const outfit = Outfit({
   subsets: ['latin'],
-  variable: '--font-caveat',
+  variable: '--font-outfit',
   display: 'swap',
+  weight: ['300', '400', '500', '600'],
+});
+
+const firaCode = Fira_Code({
+  subsets: ['latin'],
+  variable: '--font-fira',
+  display: 'swap',
+  weight: ['400', '500'],
 });
 
 export const metadata = {
@@ -55,7 +58,7 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body
-        className={`${spaceMono.variable} ${caveat.variable} font-mono antialiased bg-background text-foreground transition-colors duration-500 min-h-screen relative overflow-x-hidden selection:bg-foreground selection:text-background paper-pattern`}
+        className={`${plusJakartaSans.variable} ${outfit.variable} ${firaCode.variable} font-sans antialiased bg-background text-foreground transition-colors duration-500 min-h-screen relative overflow-x-hidden selection:bg-foreground selection:text-background paper-pattern`}
       >
         <ThemeProvider>
           {children}

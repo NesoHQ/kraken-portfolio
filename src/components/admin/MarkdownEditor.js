@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useState, useCallback } from 'react';
-import { Bold, Italic, Heading2, Heading3, List, ListOrdered, Link, Code, Quote, Minus, Eye, EyeOff } from 'lucide-react';
+import { Bold, Heading2, Heading3, List, ListOrdered, Link, Code, Quote, Minus, Eye, EyeOff } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
@@ -57,7 +57,6 @@ export function MarkdownEditor({ value = '', onChange }) {
     { icon: Heading3,     title: 'Heading 3',      action: () => insertLine('### ') },
     { sep: true },
     { icon: Bold,         title: 'Bold',           action: () => wrap('**', '**', 'bold text') },
-    { icon: Italic,       title: 'Italic',         action: () => wrap('*', '*', 'italic text') },
     { icon: Code,         title: 'Inline code',    action: () => wrap('`', '`', 'code') },
     { sep: true },
     { icon: List,         title: 'Bullet list',    action: () => insertLine('- ') },
@@ -110,7 +109,7 @@ export function MarkdownEditor({ value = '', onChange }) {
           value={value}
           onChange={e => onChange(e.target.value)}
           rows={16}
-          placeholder="Write your post in Markdown...&#10;&#10;## Heading&#10;**bold**, *italic*, `code`&#10;&#10;- bullet list&#10;1. numbered list&#10;&#10;[link text](https://example.com)"
+          placeholder="Write your post in Markdown...&#10;&#10;## Heading&#10;**bold**, `code`&#10;&#10;- bullet list&#10;1. numbered list&#10;&#10;[link text](https://example.com)"
           className="w-full bg-background px-4 py-3 text-sm text-foreground outline-none resize-y font-mono leading-relaxed placeholder:text-muted min-h-[280px]"
           spellCheck={false}
         />
@@ -142,7 +141,7 @@ export function MarkdownContent({ content = '' }) {
           </a>
         ),
         strong: ({ children }) => <strong className="font-bold text-foreground">{children}</strong>,
-        em:     ({ children }) => <em className="italic text-foreground/80">{children}</em>,
+        em:     ({ children }) => <span className="font-semibold text-foreground">{children}</span>,
         ul: ({ children }) => <ul className="list-none space-y-1.5 mb-4 pl-4">{children}</ul>,
         ol: ({ children }) => <ol className="list-decimal list-inside space-y-1.5 mb-4 pl-4 text-muted">{children}</ol>,
         li: ({ children }) => (
@@ -152,7 +151,7 @@ export function MarkdownContent({ content = '' }) {
           </li>
         ),
         blockquote: ({ children }) => (
-          <blockquote className="border-l-4 border-foreground pl-4 my-4 text-muted italic bg-primary-light py-2 pr-2">
+          <blockquote className="border-l-4 border-foreground pl-4 my-4 text-muted bg-primary-light py-2 pr-2 font-medium">
             {children}
           </blockquote>
         ),

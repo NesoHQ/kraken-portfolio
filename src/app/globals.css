@@ -78,10 +78,10 @@ html {
 
 :root {
   /* Font Families */
-  --font-display: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
-  --font-signature: var(--font-caveat);
+  --font-display: var(--font-outfit), 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: var(--font-jakarta), 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: var(--font-fira), 'Fira Code', monospace;
+  --font-signature: var(--font-outfit), 'Outfit', sans-serif;
 
   /* Monochromatic Light Theme - Professional Gray Scale */
   --background: #FFFFFF;
@@ -214,8 +214,17 @@ html {
   --color-muted: var(--text-muted);
   
   /* Fonts */
-  --font-mono: var(--font-space-mono);
-  --font-signature: var(--font-caveat);
+  --font-sans: var(--font-jakarta);
+  --font-mono: var(--font-fira);
+  --font-signature: var(--font-outfit);
+
+  /* Font weight scale — pulled down globally */
+  --font-weight-normal: 300;
+  --font-weight-medium: 400;
+  --font-weight-semibold: 500;
+  --font-weight-bold: 600;
+  --font-weight-extrabold: 600;
+  --font-weight-black: 600;
 }
 
 
@@ -278,4 +287,35 @@ html {
   &::-webkit-scrollbar-thumb:hover {
     background: var(--foreground);
   }
+}
+
+/* ============================================
+   FONT SIZE + WEIGHT — LIGHTER, SMALLER
+   ============================================ */
+html {
+  font-size: 14px;
+}
+
+body {
+  font-weight: 300;
+  font-size: 0.9rem;
+}
+
+/* Title scale — pulled down globally */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 500;
+}
+
+/* Remap large text sizes down two steps */
+.text-5xl { font-size: 1.75rem !important; line-height: 2rem !important; }
+.text-4xl { font-size: 1.4rem !important;  line-height: 1.75rem !important; }
+.text-3xl { font-size: 1.15rem !important; line-height: 1.5rem !important; }
+.text-2xl { font-size: 1rem !important;    line-height: 1.4rem !important; }
+
+/* lg: variants */
+@media (min-width: 1024px) {
+  .lg\:text-5xl { font-size: 1.75rem !important; line-height: 2rem !important; }
+  .lg\:text-4xl { font-size: 1.4rem !important;  line-height: 1.75rem !important; }
+  .lg\:text-3xl { font-size: 1.15rem !important; line-height: 1.5rem !important; }
+  .lg\:text-2xl { font-size: 1rem !important;    line-height: 1.4rem !important; }
 }
