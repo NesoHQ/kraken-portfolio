@@ -11,7 +11,7 @@ export function Sidebar() {
             <div className="sidebar-info flex items-center gap-[20px] relative lg:block lg:text-center">
                 <div className="relative w-[70px] h-[70px] lg:w-[130px] lg:h-[130px] lg:mx-auto">
                     <figure className="relative bg-card sketch-border w-full h-full overflow-hidden flex items-center justify-center p-1 z-10 group cursor-pointer transition-all duration-300 group-hover:bg-primary-light">
-                        <img src="/old/assets/images/my-avatar.png" alt="Iqbal Hossain" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out" />
+                        <img src="/astha.jpeg" alt="Iqbal Hossain" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out" />
                     </figure>
                 </div>
 
@@ -43,22 +43,22 @@ export function Sidebar() {
                     Download Resume
                 </a>
 
-                <ul className="contacts-list space-y-[30px]">
+                <ul className="contacts-list space-y-[20px]">
                     {[
-                        { title: "Email", value: "zafar.iq3089@gmail.com", link: "mailto:zafar.iq3089@gmail.com", icon: <Mail size={18} /> },
-                        { title: "Phone", value: "+880 1403229479", link: "tel:+8801403229479", icon: <Smartphone size={18} /> },
-                        { title: "Location", value: "Dhaka-1230, Bangladesh", icon: <MapPin size={18} /> }
+                        { title: "Email", value: "zafar.iq3089@gmail.com", link: "mailto:zafar.iq3089@gmail.com", icon: <Mail size={15} /> },
+                        { title: "Phone", value: "+880 1403229479", link: "tel:+8801403229479", icon: <Smartphone size={15} /> },
+                        { title: "Location", value: "Dhaka-1230, Bangladesh", icon: <MapPin size={15} /> }
                     ].map((contact, idx) => (
                         <li key={idx} className="contact-item flex items-center gap-3 group cursor-pointer">
-                            <div className="w-[40px] h-[40px] shrink-0 text-foreground text-lg bg-card sketch-border flex justify-center items-center group-hover:bg-primary-light group-hover:text-foreground transition-all duration-300">
+                            <div className="w-[34px] h-[34px] shrink-0 text-foreground bg-card sketch-border flex justify-center items-center group-hover:bg-primary-light transition-all duration-300">
                                 {contact.icon}
                             </div>
-                            <div className="contact-info text-left overflow-hidden">
-                                <p className="contact-title text-[11px] text-muted uppercase tracking-widest mb-1">{contact.title}</p>
+                            <div className="contact-info text-left overflow-hidden min-w-0">
+                                <p className="contact-title text-[10px] text-muted uppercase tracking-widest mb-0.5">{contact.title}</p>
                                 {contact.link ? (
-                                    <a href={contact.link} className="contact-link text-[14px] text-foreground group-hover:text-primary transition-colors break-words font-medium">{contact.value}</a>
+                                    <a href={contact.link} className="contact-link text-[11px] text-foreground group-hover:text-primary transition-colors font-medium block truncate">{contact.value}</a>
                                 ) : (
-                                    <time className="text-[14px] text-foreground font-medium">{contact.value}</time>
+                                    <span className="text-[11px] text-foreground font-medium block truncate">{contact.value}</span>
                                 )}
                             </div>
                         </li>
