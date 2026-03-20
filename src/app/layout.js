@@ -39,7 +39,7 @@ export default function RootLayout({ children }) {
                     document.documentElement.setAttribute('data-theme', savedTheme);
                   } else {
                     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                    const theme = prefersDark ? 'dark' : 'dark';
+                    const theme = prefersDark ? 'dark' : 'light';
                     document.documentElement.setAttribute('data-theme', theme);
                   }
                 } catch (e) {

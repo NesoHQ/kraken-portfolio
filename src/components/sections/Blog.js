@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { PenTool, ArrowLeft, Clock, Calendar, Loader2 } from "lucide-react";
+import { PenTool, ArrowLeft, Clock, Calendar, Loader2, ExternalLink } from "lucide-react";
 import { MarkdownContent } from "@/components/admin/MarkdownEditor";
 
 const ARTICLE = "active bg-card sketch-border paper-pattern p-6 lg:p-8 transition-all duration-500 relative z-10 block animate-[fadeIn_0.4s_ease_forwards]";
@@ -169,7 +169,7 @@ export function Blog() {
       ) : (
         <ul className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {blogs.map((blog, idx) => (
-            <li key={blog._id || idx} className="group">
+            <li key={blog._id || idx} className="group relative">
               <button
                 onClick={() => setSelected(idx)}
                 className="block w-full text-left bg-card sketch-border overflow-hidden hover:translate-x-1 hover:translate-y-1 transition-all duration-300 hover:bg-primary-light"
@@ -192,6 +192,18 @@ export function Blog() {
                   <p className="text-muted leading-relaxed line-clamp-2 text-sm lg:text-base">{blog.excerpt}</p>
                 </div>
               </button>
+
+              {/* Open in new tab — appears on hover */}
+              <a
+                href={`/blog/${blog._id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Open in new tab"
+                onClick={e => e.stopPropagation()}
+                className="absolute top-3 right-3 z-30 p-1.5 bg-foreground text-background sketch-border opacity-0 group-hover:opacity-100 transition-all duration-200 hover:scale-110 active:scale-95"
+              >
+                <ExternalLink size={12} />
+              </a>
             </li>
           ))}
         </ul>
