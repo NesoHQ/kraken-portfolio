@@ -4,6 +4,23 @@ import { useEffect, useState, useRef } from 'react';
 import { Loader2, Plus, Trash2 } from 'lucide-react';
 import { Btn, Field, Input, Textarea, useToast } from '@/components/admin/ui';
 
+// Controlled input that lets you type freely (with spaces) and only parses on blur
+function SkillTagsInput({ value, onChange, placeholder }) {
+  const [raw, setRaw] = useState(value.join(', '));
+
+  // Sync if parent resets (e.g. on load)
+  useEffect(() => { setRaw(value.join(', ')); }, [value.join(',')]);
+
+  return (
+    <Input
+      value={raw}
+      onChange={e => setRaw(e.target.value)}
+      onBlur={() => onChange(raw.split(',').map(t => t.trim()).filter(Boolean))}
+      placeholder={placeholder}
+    />
+  );
+}
+
 const DEFAULT_RESUME = {
   experience: [
     { title: 'Senior Software Engineer & Backend Lead', company: 'Zalmi Technology', period: 'Jan 2026 — Present', points: [''] },
@@ -162,7 +179,11 @@ export default function AdminResumePage() {
               <Input value={group.category} onChange={e => setSkill(i, 'category', e.target.value)} placeholder="e.g. Languages" />
             </Field>
             <Field label={i === 0 ? 'Tags (comma separated)' : undefined}>
-              <Input value={group.tags?.join(', ')} onChange={e => setSkill(i, 'tags', e.target.value.split(',').map(t => t.trim()).filter(Boolean))} placeholder="Golang, TypeScript, Python..." />
+              <SkillTagsInput
+                value={group.tags || []}
+                onChange={val => setSkill(i, 'tags', val)}
+                placeholder="Golang, TypeScript, Python..."
+              />
             </Field>
             <button type="button" onClick={() => deleteItem('skills', i)} className="text-muted hover:text-red-500 transition-colors mb-2 shrink-0"><Trash2 size={14} /></button>
           </div>
