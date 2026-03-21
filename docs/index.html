@@ -13,18 +13,20 @@
     :root {
       --bg: #0a0a0a;
       --fg: #fafafa;
-      --card: #171717;
+      --card: #111111;
+      --border: #2a2a2a;
       --border-mid: #404040;
       --muted: #737373;
       --muted-light: #a3a3a3;
-      --dot-color: #333333;
+      --dot-color: #222222;
     }
 
     [data-theme="light"] {
-      --bg: #ffffff;
+      --bg: #f5f5f5;
       --fg: #0a0a0a;
       --card: #ffffff;
-      --border-mid: #d4d4d4;
+      --border: #e0e0e0;
+      --border-mid: #c8c8c8;
       --muted: #a3a3a3;
       --muted-light: #525252;
       --dot-color: #d4d4d4;
@@ -33,65 +35,65 @@
     html { font-size: 14px; scroll-behavior: smooth; }
 
     body {
-      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
       font-weight: 300;
       background-color: var(--bg);
       background-image: radial-gradient(var(--dot-color) 1px, transparent 1px);
       background-size: 24px 24px;
       color: var(--fg);
       min-height: 100vh;
-      padding: 56px 24px 80px;
+      padding: 64px 24px 96px;
       transition: background-color 0.4s, color 0.4s;
     }
 
+    /* ── Header ── */
     header {
       text-align: center;
-      margin-bottom: 64px;
+      margin-bottom: 72px;
     }
 
-    header h1 {
+    .logo {
       font-family: 'Caveat', cursive;
-      font-size: 2.8rem;
+      font-size: 3.2rem;
       font-weight: 600;
-      letter-spacing: -0.01em;
       color: var(--fg);
-      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      margin-bottom: 10px;
     }
 
-    header p {
-      font-size: 0.8rem;
+    .tagline {
+      font-size: 0.75rem;
       color: var(--muted);
-      letter-spacing: 0.04em;
+      letter-spacing: 0.06em;
+      margin-bottom: 24px;
     }
 
-    header p a {
+    .tagline a {
       color: var(--muted-light);
       text-decoration: none;
       border-bottom: 1px dashed var(--border-mid);
       transition: color 0.2s;
     }
-
-    header p a:hover { color: var(--fg); }
+    .tagline a:hover { color: var(--fg); }
 
     .theme-toggle {
       display: inline-flex;
-      align-items: center;
       border: 2px dashed var(--border-mid);
       overflow: hidden;
-      margin-top: 20px;
     }
 
     .theme-toggle button {
       background: none;
       border: none;
-      padding: 6px 18px;
-      font-size: 0.7rem;
+      padding: 7px 20px;
+      font-size: 0.65rem;
       font-family: inherit;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--muted);
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.25s;
     }
 
     .theme-toggle button.active {
@@ -99,111 +101,149 @@
       color: var(--bg);
     }
 
+    /* ── Section label ── */
     .section-label {
       display: flex;
       align-items: center;
-      gap: 12px;
-      max-width: 860px;
-      margin: 0 auto 20px;
-      font-size: 0.65rem;
+      gap: 14px;
+      max-width: 960px;
+      margin: 0 auto 24px;
+      font-size: 0.6rem;
       font-weight: 500;
-      letter-spacing: 0.18em;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
       color: var(--muted);
     }
 
+    .section-label .star { font-size: 0.8rem; }
+
     .section-label::after {
       content: '';
       flex: 1;
-      height: 1px;
       border-top: 1px dashed var(--border-mid);
     }
 
+    /* ── Slideshow wrapper ── */
     .slideshow {
-      max-width: 860px;
-      margin: 0 auto 72px;
-      border: 2px dashed var(--border-mid);
-      background: var(--card);
+      max-width: 960px;
+      margin: 0 auto 80px;
+      position: relative;
     }
 
-    .slides {
+    /* image stage */
+    .stage {
       position: relative;
-      overflow: hidden;
-      aspect-ratio: 16 / 9;
       background: var(--card);
+      border: 2px dashed var(--border-mid);
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .stage::before {
+      content: '';
+      display: block;
+      padding-top: 62.5%; /* 16:10 ratio — shows full screenshots */
     }
 
     .slide {
       position: absolute;
       inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       opacity: 0;
-      transition: opacity 0.45s ease;
+      transform: translateX(40px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      pointer-events: none;
     }
 
-    .slide.active { opacity: 1; }
+    .slide.active {
+      opacity: 1;
+      transform: translateX(0);
+      pointer-events: auto;
+    }
+
+    .slide.exit-left {
+      opacity: 0;
+      transform: translateX(-40px);
+    }
 
     .slide img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
       display: block;
+      position: absolute;
+      inset: 0;
     }
 
-    .slide-caption {
+    /* caption */
+    .caption {
       position: absolute;
       bottom: 0; left: 0; right: 0;
-      padding: 7px 14px;
-      background: rgba(10, 10, 10, 0.72);
-      backdrop-filter: blur(4px);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.65rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--muted-light);
-    }
-
-    .slide-caption .badge {
-      font-size: 0.55rem;
-      padding: 2px 7px;
-      border: 1px dashed var(--border-mid);
-      color: var(--muted);
-      letter-spacing: 0.1em;
-    }
-
-    .controls {
+      padding: 10px 16px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.75));
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 10px 14px;
-      border-top: 2px dashed var(--border-mid);
+      gap: 8px;
+    }
+
+    .caption-name {
+      font-size: 0.65rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #e5e5e5;
+      font-weight: 400;
+    }
+
+    .caption-badge {
+      font-size: 0.55rem;
+      padding: 2px 8px;
+      border: 1px dashed rgba(255,255,255,0.25);
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* arrow buttons */
+    .arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: var(--card);
+      border: 2px dashed var(--border-mid);
+      color: var(--muted-light);
+      width: 38px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.2s;
+      z-index: 10;
+      line-height: 1;
+    }
+
+    .arrow:hover { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+    .arrow.left { left: -19px; }
+    .arrow.right { right: -19px; }
+
+    /* bottom bar */
+    .bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 4px 0;
       gap: 12px;
     }
 
-    .btn {
-      background: none;
-      border: 1px dashed var(--border-mid);
-      color: var(--muted-light);
-      padding: 5px 14px;
-      font-size: 0.65rem;
-      font-family: inherit;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: all 0.2s;
-      white-space: nowrap;
-    }
-
-    .btn:hover:not(:disabled) { border-color: var(--fg); color: var(--fg); }
-    .btn:disabled { opacity: 0.2; cursor: default; }
-
     .dots {
       display: flex;
-      gap: 5px;
+      gap: 6px;
       align-items: center;
       flex-wrap: wrap;
-      justify-content: center;
     }
 
     .dot {
@@ -213,96 +253,164 @@
       border: none;
       cursor: pointer;
       padding: 0;
-      transition: all 0.2s;
+      transition: all 0.25s;
       flex-shrink: 0;
     }
 
-    .dot.active { background: var(--fg); width: 16px; }
+    .dot.active { background: var(--fg); width: 20px; }
 
     .counter {
-      font-size: 0.65rem;
+      font-size: 0.6rem;
       color: var(--muted);
-      letter-spacing: 0.06em;
+      letter-spacing: 0.08em;
       white-space: nowrap;
+      font-variant-numeric: tabular-nums;
     }
 
+    .progress {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      background: var(--fg);
+      width: 0%;
+      transition: width 0.1s linear;
+    }
+
+    /* ── Footer ── */
     footer {
       text-align: center;
-      margin-top: 16px;
+      padding-top: 8px;
     }
 
     footer a {
       display: inline-block;
       border: 2px dashed var(--border-mid);
       color: var(--muted-light);
-      padding: 10px 32px;
+      padding: 12px 40px;
       font-family: 'Caveat', cursive;
-      font-size: 1.1rem;
-      letter-spacing: 0.04em;
+      font-size: 1.2rem;
+      font-weight: 500;
+      letter-spacing: 0.03em;
       text-decoration: none;
-      transition: all 0.2s;
+      transition: all 0.25s;
     }
 
     footer a:hover { border-color: var(--fg); color: var(--fg); }
+
+    /* ── Lightbox ── */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.92);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      cursor: zoom-out;
+    }
+
+    .lightbox.open { display: flex; }
+
+    .lightbox img {
+      max-width: 100%;
+      max-height: 90vh;
+      object-fit: contain;
+      border: 2px dashed var(--border-mid);
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 20px; right: 24px;
+      background: none;
+      border: 1px dashed var(--border-mid);
+      color: var(--muted-light);
+      font-size: 1rem;
+      padding: 4px 12px;
+      cursor: pointer;
+      font-family: inherit;
+      letter-spacing: 0.08em;
+    }
+
+    .lightbox-close:hover { color: var(--fg); border-color: var(--fg); }
   </style>
 </head>
 <body>
 
   <header>
-    <h1>kraken — portfolio</h1>
-    <p>
+    <div class="logo">kraken &#8212; portfolio</div>
+    <p class="tagline">
       Full-stack self-hosted portfolio &nbsp;&middot;&nbsp;
       <a href="https://github.com/geomachine/portfolio" target="_blank">github.com/geomachine/portfolio</a>
     </p>
     <div class="theme-toggle">
-      <button class="active" onclick="setTheme('dark')">&#127761; Dark</button>
-      <button onclick="setTheme('light')">&#9728;&#65039; Light</button>
+      <button class="active" onclick="setTheme('dark')">&#9679; Dark</button>
+      <button onclick="setTheme('light')">&#9675; Light</button>
     </div>
   </header>
 
-  <p class="section-label"><span>&#10022;</span> Main Portfolio</p>
-  <div class="slideshow" id="portfolio-show">
-    <div class="slides">
-      <div class="slide active"><img src="./main-portfolio/dark/about.png" alt="About Dark" /><div class="slide-caption">About <span class="badge">dark</span></div></div>
-      <div class="slide"><img src="./main-portfolio/light/about.png" alt="About Light" /><div class="slide-caption">About <span class="badge">light</span></div></div>
-      <div class="slide"><img src="./main-portfolio/dark/resume.png" alt="Resume Dark" /><div class="slide-caption">Resume <span class="badge">dark</span></div></div>
-      <div class="slide"><img src="./main-portfolio/light/resume.png" alt="Resume Light" /><div class="slide-caption">Resume <span class="badge">light</span></div></div>
-      <div class="slide"><img src="./main-portfolio/dark/portfolio.png" alt="Portfolio Dark" /><div class="slide-caption">Portfolio <span class="badge">dark</span></div></div>
-      <div class="slide"><img src="./main-portfolio/light/portfolio.png" alt="Portfolio Light" /><div class="slide-caption">Portfolio <span class="badge">light</span></div></div>
-      <div class="slide"><img src="./main-portfolio/dark/blog.png" alt="Blog Dark" /><div class="slide-caption">Blog <span class="badge">dark</span></div></div>
-      <div class="slide"><img src="./main-portfolio/light/blog.png" alt="Blog Light" /><div class="slide-caption">Blog <span class="badge">light</span></div></div>
-      <div class="slide"><img src="./main-portfolio/dark/contact.png" alt="Contact Dark" /><div class="slide-caption">Contact <span class="badge">dark</span></div></div>
-      <div class="slide"><img src="./main-portfolio/light/contact.png" alt="Contact Light" /><div class="slide-caption">Contact <span class="badge">light</span></div></div>
+  <!-- MAIN PORTFOLIO -->
+  <p class="section-label"><span class="star">&#10022;</span> Main Portfolio</p>
+  <div class="slideshow" id="s1">
+    <div class="stage">
+      <div class="slide active" data-label="About" data-mode="dark"><img src="../portfolio/main-portfolio/dark/about.png" alt="About Dark" /></div>
+      <div class="slide" data-label="About" data-mode="light"><img src="../portfolio/main-portfolio/light/about.png" alt="About Light" /></div>
+      <div class="slide" data-label="Resume" data-mode="dark"><img src="../portfolio/main-portfolio/dark/resume.png" alt="Resume Dark" /></div>
+      <div class="slide" data-label="Resume" data-mode="light"><img src="../portfolio/main-portfolio/light/resume.png" alt="Resume Light" /></div>
+      <div class="slide" data-label="Portfolio" data-mode="dark"><img src="../portfolio/main-portfolio/dark/portfolio.png" alt="Portfolio Dark" /></div>
+      <div class="slide" data-label="Portfolio" data-mode="light"><img src="../portfolio/main-portfolio/light/portfolio.png" alt="Portfolio Light" /></div>
+      <div class="slide" data-label="Blog" data-mode="dark"><img src="../portfolio/main-portfolio/dark/blog.png" alt="Blog Dark" /></div>
+      <div class="slide" data-label="Blog" data-mode="light"><img src="../portfolio/main-portfolio/light/blog.png" alt="Blog Light" /></div>
+      <div class="slide" data-label="Contact" data-mode="dark"><img src="../portfolio/main-portfolio/dark/contact.png" alt="Contact Dark" /></div>
+      <div class="slide" data-label="Contact" data-mode="light"><img src="../portfolio/main-portfolio/light/contact.png" alt="Contact Light" /></div>
+      <div class="caption">
+        <span class="caption-name"></span>
+        <span class="caption-badge"></span>
+      </div>
+      <button class="arrow left" aria-label="Previous">&#8592;</button>
+      <button class="arrow right" aria-label="Next">&#8594;</button>
     </div>
-    <div class="controls">
-      <button class="btn prev">&#8592; prev</button>
+    <div class="bar">
       <div class="dots"></div>
+      <div class="progress"><div class="progress-bar"></div></div>
       <span class="counter"></span>
-      <button class="btn next">next &#8594;</button>
     </div>
   </div>
 
-  <p class="section-label"><span>&#10022;</span> Admin Panel</p>
-  <div class="slideshow" id="admin-show">
-    <div class="slides">
-      <div class="slide active"><img src="./admin/dark/dashboard.png" alt="Dashboard Dark" /><div class="slide-caption">Dashboard <span class="badge">dark</span></div></div>
-      <div class="slide"><img src="./admin/light/dashboard.png" alt="Dashboard Light" /><div class="slide-caption">Dashboard <span class="badge">light</span></div></div>
-      <div class="slide"><img src="./admin/dark/about.png" alt="About Dark" /><div class="slide-caption">About <span class="badge">dark</span></div></div>
-      <div class="slide"><img src="./admin/light/about.png" alt="About Light" /><div class="slide-caption">About <span class="badge">light</span></div></div>
-      <div class="slide"><img src="./admin/dark/blogs.png" alt="Blogs Dark" /><div class="slide-caption">Blogs <span class="badge">dark</span></div></div>
-      <div class="slide"><img src="./admin/light/blogs.png" alt="Blogs Light" /><div class="slide-caption">Blogs <span class="badge">light</span></div></div>
-      <div class="slide"><img src="./admin/dark/projects.png" alt="Projects Dark" /><div class="slide-caption">Projects <span class="badge">dark</span></div></div>
-      <div class="slide"><img src="./admin/light/projects.png" alt="Projects Light" /><div class="slide-caption">Projects <span class="badge">light</span></div></div>
-      <div class="slide"><img src="./admin/dark/resume.png" alt="Resume Dark" /><div class="slide-caption">Resume <span class="badge">dark</span></div></div>
-      <div class="slide"><img src="./admin/light/resume.png" alt="Resume Light" /><div class="slide-caption">Resume <span class="badge">light</span></div></div>
-      <div class="slide"><img src="./admin/dark/messages.png" alt="Messages Dark" /><div class="slide-caption">Messages <span class="badge">dark</span></div></div>
-      <div class="slide"><img src="./admin/light/messages.png" alt="Messages Light" /><div class="slide-caption">Messages <span class="badge">light</span></div></div>
+  <!-- ADMIN PANEL -->
+  <p class="section-label"><span class="star">&#10022;</span> Admin Panel</p>
+  <div class="slideshow" id="s2">
+    <div class="stage">
+      <div class="slide active" data-label="Dashboard" data-mode="dark"><img src="../portfolio/admin/dark/dashboard.png" alt="Dashboard Dark" /></div>
+      <div class="slide" data-label="Dashboard" data-mode="light"><img src="../portfolio/admin/light/dashboard.png" alt="Dashboard Light" /></div>
+      <div class="slide" data-label="About" data-mode="dark"><img src="../portfolio/admin/dark/about.png" alt="About Dark" /></div>
+      <div class="slide" data-label="About" data-mode="light"><img src="../portfolio/admin/light/about.png" alt="About Light" /></div>
+      <div class="slide" data-label="Blogs" data-mode="dark"><img src="../portfolio/admin/dark/blogs.png" alt="Blogs Dark" /></div>
+      <div class="slide" data-label="Blogs" data-mode="light"><img src="../portfolio/admin/light/blogs.png" alt="Blogs Light" /></div>
+      <div class="slide" data-label="Projects" data-mode="dark"><img src="../portfolio/admin/dark/projects.png" alt="Projects Dark" /></div>
+      <div class="slide" data-label="Projects" data-mode="light"><img src="../portfolio/admin/light/projects.png" alt="Projects Light" /></div>
+      <div class="slide" data-label="Resume" data-mode="dark"><img src="../portfolio/admin/dark/resume.png" alt="Resume Dark" /></div>
+      <div class="slide" data-label="Resume" data-mode="light"><img src="../portfolio/admin/light/resume.png" alt="Resume Light" /></div>
+      <div class="slide" data-label="Messages" data-mode="dark"><img src="../portfolio/admin/dark/messages.png" alt="Messages Dark" /></div>
+      <div class="slide" data-label="Messages" data-mode="light"><img src="../portfolio/admin/light/messages.png" alt="Messages Light" /></div>
+      <div class="caption">
+        <span class="caption-name"></span>
+        <span class="caption-badge"></span>
+      </div>
+      <button class="arrow left" aria-label="Previous">&#8592;</button>
+      <button class="arrow right" aria-label="Next">&#8594;</button>
     </div>
-    <div class="controls">
-      <button class="btn prev">&#8592; prev</button>
+    <div class="bar">
       <div class="dots"></div>
+      <div class="progress"><div class="progress-bar"></div></div>
       <span class="counter"></span>
-      <button class="btn next">next &#8594;</button>
     </div>
   </div>
 
@@ -310,7 +418,15 @@
     <a href="https://github.com/geomachine/portfolio" target="_blank">use this template &#8594;</a>
   </footer>
 
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <button class="lightbox-close" onclick="closeLightbox()">close &#215;</button>
+    <img id="lightbox-img" src="" alt="" />
+  </div>
+
   <script>
+    var INTERVAL = 4000;
+
     function setTheme(t) {
       document.documentElement.setAttribute('data-theme', t);
       document.querySelectorAll('.theme-toggle button').forEach(function(b, i) {
@@ -322,10 +438,11 @@
       var slides = Array.from(el.querySelectorAll('.slide'));
       var dotsEl = el.querySelector('.dots');
       var counter = el.querySelector('.counter');
-      var prevBtn = el.querySelector('.prev');
-      var nextBtn = el.querySelector('.next');
+      var progressBar = el.querySelector('.progress-bar');
+      var captionName = el.querySelector('.caption-name');
+      var captionBadge = el.querySelector('.caption-badge');
       var current = 0;
-      var timer;
+      var timer, progressTimer, progressStart;
 
       slides.forEach(function(_, i) {
         var d = document.createElement('button');
@@ -335,28 +452,76 @@
         dotsEl.appendChild(d);
       });
 
+      el.querySelector('.arrow.left').addEventListener('click', function() { goTo(current - 1); resetTimer(); });
+      el.querySelector('.arrow.right').addEventListener('click', function() { goTo(current + 1); resetTimer(); });
+
+      el.querySelector('.stage').addEventListener('click', function(e) {
+        if (e.target.tagName === 'IMG') {
+          openLightbox(e.target.src, e.target.alt);
+        }
+      });
+
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowLeft') { goTo(current - 1); resetTimer(); }
+        if (e.key === 'ArrowRight') { goTo(current + 1); resetTimer(); }
+      });
+
       function goTo(n) {
+        slides[current].classList.add('exit-left');
         slides[current].classList.remove('active');
         dotsEl.children[current].classList.remove('active');
+        var prev = current;
         current = (n + slides.length) % slides.length;
+        setTimeout(function() { slides[prev].classList.remove('exit-left'); }, 450);
         slides[current].classList.add('active');
         dotsEl.children[current].classList.add('active');
         counter.textContent = (current + 1) + ' / ' + slides.length;
+        captionName.textContent = slides[current].getAttribute('data-label');
+        captionBadge.textContent = slides[current].getAttribute('data-mode');
+        startProgress();
+      }
+
+      function startProgress() {
+        clearInterval(progressTimer);
+        progressBar.style.transition = 'none';
+        progressBar.style.width = '0%';
+        setTimeout(function() {
+          progressBar.style.transition = 'width ' + INTERVAL + 'ms linear';
+          progressBar.style.width = '100%';
+        }, 20);
       }
 
       function resetTimer() {
         clearInterval(timer);
-        timer = setInterval(function() { goTo(current + 1); }, 4000);
+        timer = setInterval(function() { goTo(current + 1); }, INTERVAL);
+        startProgress();
       }
 
-      prevBtn.addEventListener('click', function() { goTo(current - 1); resetTimer(); });
-      nextBtn.addEventListener('click', function() { goTo(current + 1); resetTimer(); });
-      el.addEventListener('mouseenter', function() { clearInterval(timer); });
-      el.addEventListener('mouseleave', resetTimer);
+      el.querySelector('.stage').addEventListener('mouseenter', function() {
+        clearInterval(timer);
+        clearInterval(progressTimer);
+        progressBar.style.transition = 'none';
+      });
+
+      el.querySelector('.stage').addEventListener('mouseleave', resetTimer);
 
       goTo(0);
       resetTimer();
     }
+
+    function openLightbox(src, alt) {
+      document.getElementById('lightbox-img').src = src;
+      document.getElementById('lightbox-img').alt = alt;
+      document.getElementById('lightbox').classList.add('open');
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('open');
+    }
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeLightbox();
+    });
 
     document.querySelectorAll('.slideshow').forEach(initSlideshow);
   </script>

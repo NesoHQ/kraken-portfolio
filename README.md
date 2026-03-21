@@ -6,6 +6,12 @@ A full-stack, self-hosted personal portfolio built with Next.js 16. Fully dynami
 
 ---
 
+## LIVE
+
+> **[→ View Live portfolio](https://kraken.nesohq.org/)** — deployed portfolio for public views.
+
+---
+
 ## Preview
 
 > **[→ View interactive slideshow](https://nesohq.github.io/kraken-portfolio/)** — portfolio sections and admin panel, dark & light.
