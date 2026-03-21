@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>kraken — Portfolio Preview</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #0a0a0a;
+      color: #fafafa;
+      min-height: 100vh;
+      padding: 48px 24px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 1.6rem;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #737373;
+      font-size: 0.85rem;
+      margin-bottom: 56px;
+    }
+
+    .subtitle a {
+      color: #a3a3a3;
+      text-decoration: none;
+      border-bottom: 1px dashed #525252;
+    }
+
+    .subtitle a:hover { color: #fafafa; }
+
+    .section-label {
+      text-align: center;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #525252;
+      margin-bottom: 16px;
+    }
+
+    /* Slideshow */
+    .slideshow {
+      position: relative;
+      max-width: 900px;
+      margin: 0 auto 64px;
+      background: #171717;
+      border: 1px dashed #262626;
+    }
+
+    .slides {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 16/9;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .slide.active { opacity: 1; }
+
+    .slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .slide-caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 8px 14px;
+      background: rgba(0,0,0,0.6);
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #a3a3a3;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .slide-caption .mode {
+      font-size: 0.6rem;
+      padding: 2px 6px;
+      border: 1px dashed #404040;
+      color: #737373;
+    }
+
+    /* Controls */
+    .controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      border-top: 1px dashed #262626;
+    }
+
+    .btn {
+      background: none;
+      border: 1px dashed #404040;
+      color: #a3a3a3;
+      padding: 6px 16px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      letter-spacing: 0.05em;
+      transition: all 0.2s;
+    }
+
+    .btn:hover { border-color: #fafafa; color: #fafafa; }
+    .btn:disabled { opacity: 0.2; cursor: default; }
+
+    .dots {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      background: #404040;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+      padding: 0;
+    }
+
+    .dot.active { background: #fafafa; width: 18px; }
+
+    .counter {
+      font-size: 0.7rem;
+      color: #525252;
+      letter-spacing: 0.05em;
+    }
+
+    /* Theme toggle for slides */
+    .theme-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      margin-bottom: 0;
+      border-bottom: 1px dashed #262626;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .theme-tab {
+      flex: 1;
+      padding: 8px;
+      background: none;
+      border: none;
+      color: #525252;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+      border-bottom: 2px solid transparent;
+    }
+
+    .theme-tab.active {
+      color: #fafafa;
+      border-bottom-color: #fafafa;
+      background: #171717;
+    }
+
+    .cta {
+      text-align: center;
+      margin-top: 16px;
+    }
+
+    .cta a {
+      display: inline-block;
+      border: 1px dashed #404040;
+      color: #a3a3a3;
+      padding: 10px 28px;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: all 0.2s;
+    }
+
+    .cta a:hover { border-color: #fafafa; color: #fafafa; }
+  </style>
+</head>
+<body>
+
+  <h1>kraken — Portfolio Preview</h1>
+  <p class="subtitle">
+    A full-stack self-hosted portfolio built with Next.js 16 &nbsp;·&nbsp;
+    <a href="https://github.com/geomachine/portfolio">View on GitHub →</a>
+  </p>
+
+  <!-- MAIN PORTFOLIO SLIDESHOW -->
+  <p class="section-label">Main Portfolio</p>
+
+  <div class="slideshow" id="portfolio-show">
+    <div class="slides">
+      <div class="slide active"><img src="../portfolio/main-portfolio/dark/about.png" /><div class="slide-caption">About <span class="mode">dark</span></div></div>
+      <div class="slide"><img src="../portfolio/main-portfolio/light/about.png" /><div class="slide-caption">About <span class="mode">light</span></div></div>
+      <div class="slide"><img src="../portfolio/main-portfolio/dark/resume.png" /><div class="slide-caption">Resume <span class="mode">dark</span></div></div>
+      <div class="slide"><img src="../portfolio/main-portfolio/light/resume.png" /><div class="slide-caption">Resume <span class="mode">light</span></div></div>
+      <div class="slide"><img src="../portfolio/main-portfolio/dark/portfolio.png" /><div class="slide-caption">Portfolio <span class="mode">dark</span></div></div>
+      <div class="slide"><img src="../portfolio/main-portfolio/light/portfolio.png" /><div class="slide-caption">Portfolio <span class="mode">light</span></div></div>
+      <div class="slide"><img src="../portfolio/main-portfolio/dark/blog.png" /><div class="slide-caption">Blog <span class="mode">dark</span></div></div>
+      <div class="slide"><img src="../portfolio/main-portfolio/light/blog.png" /><div class="slide-caption">Blog <span class="mode">light</span></div></div>
+      <div class="slide"><img src="../portfolio/main-portfolio/dark/contact.png" /><div class="slide-caption">Contact <span class="mode">dark</span></div></div>
+      <div class="slide"><img src="../portfolio/main-portfolio/light/contact.png" /><div class="slide-caption">Contact <span class="mode">light</span></div></div>
+    </div>
+    <div class="controls">
+      <button class="btn prev">← Prev</button>
+      <div class="dots"></div>
+      <span class="counter"></span>
+      <button class="btn next">Next →</button>
+    </div>
+  </div>
+
+  <!-- ADMIN SLIDESHOW -->
+  <p class="section-label">Admin Panel</p>
+
+  <div class="slideshow" id="admin-show">
+    <div class="slides">
+      <div class="slide active"><img src="../portfolio/admin/dark/dashboard.png" /><div class="slide-caption">Dashboard <span class="mode">dark</span></div></div>
+      <div class="slide"><img src="../portfolio/admin/light/dashboard.png" /><div class="slide-caption">Dashboard <span class="mode">light</span></div></div>
+      <div class="slide"><img src="../portfolio/admin/dark/about.png" /><div class="slide-caption">About <span class="mode">dark</span></div></div>
+      <div class="slide"><img src="../portfolio/admin/light/about.png" /><div class="slide-caption">About <span class="mode">light</span></div></div>
+      <div class="slide"><img src="../portfolio/admin/dark/blogs.png" /><div class="slide-caption">Blogs <span class="mode">dark</span></div></div>
+      <div class="slide"><img src="../portfolio/admin/light/blogs.png" /><div class="slide-caption">Blogs <span class="mode">light</span></div></div>
+      <div class="slide"><img src="../portfolio/admin/dark/projects.png" /><div class="slide-caption">Projects <span class="mode">dark</span></div></div>
+      <div class="slide"><img src="../portfolio/admin/light/projects.png" /><div class="slide-caption">Projects <span class="mode">light</span></div></div>
+      <div class="slide"><img src="../portfolio/admin/dark/resume.png" /><div class="slide-caption">Resume <span class="mode">dark</span></div></div>
+      <div class="slide"><img src="../portfolio/admin/light/resume.png" /><div class="slide-caption">Resume <span class="mode">light</span></div></div>
+      <div class="slide"><img src="../portfolio/admin/dark/messages.png" /><div class="slide-caption">Messages <span class="mode">dark</span></div></div>
+      <div class="slide"><img src="../portfolio/admin/light/messages.png" /><div class="slide-caption">Messages <span class="mode">light</span></div></div>
+    </div>
+    <div class="controls">
+      <button class="btn prev">← Prev</button>
+      <div class="dots"></div>
+      <span class="counter"></span>
+      <button class="btn next">Next →</button>
+    </div>
+  </div>
+
+  <div class="cta">
+    <a href="https://github.com/geomachine/portfolio">Use this template on GitHub →</a>
+  </div>
+
+  <script>
+    function initSlideshow(el) {
+      const slides = [...el.querySelectorAll('.slide')];
+      const dotsEl = el.querySelector('.dots');
+      const counter = el.querySelector('.counter');
+      const prevBtn = el.querySelector('.prev');
+      const nextBtn = el.querySelector('.next');
+      let current = 0;
+
+      // build dots
+      slides.forEach((_, i) => {
+        const d = document.createElement('button');
+        d.className = 'dot' + (i === 0 ? ' active' : '');
+        d.addEventListener('click', () => goTo(i));
+        dotsEl.appendChild(d);
+      });
+
+      function goTo(n) {
+        slides[current].classList.remove('active');
+        dotsEl.children[current].classList.remove('active');
+        current = (n + slides.length) % slides.length;
+        slides[current].classList.add('active');
+        dotsEl.children[current].classList.add('active');
+        counter.textContent = `${current + 1} / ${slides.length}`;
+        prevBtn.disabled = false;
+        nextBtn.disabled = false;
+      }
+
+      prevBtn.addEventListener('click', () => goTo(current - 1));
+      nextBtn.addEventListener('click', () => goTo(current + 1));
+
+      // auto-advance every 4s
+      setInterval(() => goTo(current + 1), 4000);
+
+      goTo(0);
+    }
+
+    document.querySelectorAll('.slideshow').forEach(initSlideshow);
+  </script>
+
+</body>
+</html>
