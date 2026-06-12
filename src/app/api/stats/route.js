@@ -1,8 +1,6 @@
 import { requireAdmin } from '@/lib/api/requireAdmin';
 import { successResponse, errorResponse } from '@/lib/api/response';
-import connectDB from '@/lib/db/mongoose';
-import Blog from '@/lib/db/models/Blog';
-import Contact from '@/lib/db/models/Contact';
+import connectDB, { countDocs } from '@/lib/db/pg';
 
 export async function GET() {
   const auth = await requireAdmin();
@@ -10,9 +8,9 @@ export async function GET() {
   try {
     await connectDB();
     const [totalBlogs, totalMessages, unreadMessages] = await Promise.all([
-      Blog.countDocuments(),
-      Contact.countDocuments(),
-      Contact.countDocuments({ read: false }),
+      countDocs('blogs'),
+      countDocs('contacts'),
+      countDocs('contacts', `data->>'read' = 'false'`),
     ]);
     return successResponse({ totalBlogs, totalMessages, unreadMessages });
   } catch {
