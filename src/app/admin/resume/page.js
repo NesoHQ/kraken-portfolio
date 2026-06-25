@@ -154,7 +154,7 @@ export default function AdminResumePage() {
 
       {/* Infra Projects */}
       <section className="bg-card border-2 border-dashed border-card-border p-6 space-y-4">
-        <h2 className="font-signature font-bold text-lg text-foreground border-b border-dashed border-card-border pb-2">Cloud & Infra Projects</h2>
+        <h2 className="font-signature font-bold text-lg text-foreground border-b border-dashed border-card-border pb-2">Projects</h2>
         {data.infraProjects.map((proj, i) => (
           <div key={i} className="border border-dashed border-card-border p-4 space-y-3 relative">
             <button type="button" onClick={() => deleteItem('infraProjects', i)} className="absolute top-3 right-3 text-muted hover:text-red-500 transition-colors"><Trash2 size={14} /></button>
