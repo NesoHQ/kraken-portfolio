@@ -1,5 +1,4 @@
-import About from './models/About';
-import Resume from './models/Resume';
+import { getSingleton, insertDoc, query } from './pg';
 
 const ABOUT_SEED = {
   name: 'Iqbal Hossain',
@@ -96,7 +95,7 @@ const RESUME_SEED = {
 };
 
 export async function seedAbout() {
-  const existing = await About.findOne().lean();
+  const existing = await getSingleton('about');
   // Only seed if truly empty — no doc at all, or missing all key fields
   const isEmpty = !existing || (
     !existing.services?.length &&
@@ -104,19 +103,19 @@ export async function seedAbout() {
     !existing.bio?.length
   );
   if (isEmpty) {
-    await About.deleteMany({});
-    await About.create(ABOUT_SEED);
+    await query('DELETE FROM about');
+    await insertDoc('about', ABOUT_SEED);
   }
 }
 
 export async function seedResume() {
-  const existing = await Resume.findOne().lean();
+  const existing = await getSingleton('resume');
   const isEmpty = !existing || (
     !existing.experience?.length &&
     !existing.skills?.length
   );
   if (isEmpty) {
-    await Resume.deleteMany({});
-    await Resume.create(RESUME_SEED);
+    await query('DELETE FROM resume');
+    await insertDoc('resume', RESUME_SEED);
   }
 }

@@ -20,7 +20,7 @@ A full-stack, self-hosted personal portfolio built with Next.js 16. Fully dynami
 
 ## Features
 
-- **Dynamic content** — all sections (about, resume, projects, blog, contact) are managed via a built-in admin panel and stored in MongoDB
+- **Dynamic content** — all sections (about, resume, projects, blog, contact) are managed via a built-in admin panel and stored in PostgreSQL (JSONB)
 - **Markdown blog** — rich markdown editor with GFM support, live preview, syntax highlighting, and dedicated post pages (`/blog/[id]`)
 - **Image uploads** — drag-and-drop or URL paste, uploaded to any S3-compatible storage (RustFS, MinIO, AWS S3)
 - **Admin panel** — protected by JWT session, full CRUD for all content
@@ -37,7 +37,7 @@ A full-stack, self-hosted personal portfolio built with Next.js 16. Fully dynami
 |---|---|
 | Framework | Next.js 16 (App Router) |
 | Language | JavaScript (React 19) |
-| Database | MongoDB via Mongoose |
+| Database | PostgreSQL (JSONB) via node-postgres |
 | Auth | JWT + HTTP-only cookies |
 | Storage | S3-compatible (RustFS / MinIO / AWS S3) |
 | Styling | Tailwind CSS v4 |
@@ -53,7 +53,7 @@ A full-stack, self-hosted personal portfolio built with Next.js 16. Fully dynami
 ### Prerequisites
 
 - Node.js 20+
-- MongoDB (local or Atlas)
+- PostgreSQL 13+ (local or hosted, e.g. Neon/Supabase)
 - An S3-compatible storage bucket (optional — image uploads won't work without it)
 
 ### Local Development
@@ -70,13 +70,15 @@ npm install
 cp .env.local.example .env.local
 # Edit .env.local with your values
 
-# 4. Start MongoDB (Docker)
+# 4. Start PostgreSQL (Docker)
 docker run -d \
-  --name mongodb \
-  -p 27017:27017 \
-  -e MONGO_INITDB_DATABASE=portfolio \
-  -v mongodb_data:/data/db \
-  mongo:7
+  --name postgres \
+  -p 5432:5432 \
+  -e POSTGRES_USER=postgres \
+  -e POSTGRES_PASSWORD=postgres \
+  -e POSTGRES_DB=portfolio \
+  -v postgres_data:/var/lib/postgresql/data \
+  postgres:16
 
 # 5. Start the dev server
 npm run dev
@@ -90,8 +92,8 @@ Admin panel is at [http://localhost:3000/admin](http://localhost:3000/admin).
 ## Environment Variables
 
 ```env
-# MongoDB
-MONGODB_URI=mongodb://localhost:27017/portfolio
+# PostgreSQL
+DATABASE_URL=postgres://postgres:postgres@localhost:5432/portfolio
 
 # Admin credentials
 ADMIN_EMAIL=admin@example.com
@@ -161,7 +163,7 @@ src/
 │   ├── sections/       # Portfolio sections (About, Resume, Blog, etc.)
 │   └── Sidebar.js      # Profile sidebar
 └── lib/
-    ├── db/             # Mongoose models + connection
+    ├── db/             # Postgres connection + JSONB document helpers
     ├── api/            # JWT, auth middleware, response helpers
     └── storage.js      # S3 upload utility
 ```

@@ -1,7 +1,6 @@
 import { requireAdmin } from '@/lib/api/requireAdmin';
 import { successResponse, errorResponse } from '@/lib/api/response';
-import connectDB from '@/lib/db/mongoose';
-import Blog from '@/lib/db/models/Blog';
+import connectDB, { findMany, countDocs, insertDoc } from '@/lib/db/pg';
 
 export async function GET(request) {
   try {
@@ -11,16 +10,25 @@ export async function GET(request) {
     const limit = Math.min(50, parseInt(searchParams.get('limit') || '20'));
     const q     = searchParams.get('q') || '';
 
-    const filter = q
-      ? { $or: [{ title: { $regex: q, $options: 'i' } }, { category: { $regex: q, $options: 'i' } }, { tags: { $regex: q, $options: 'i' } }] }
-      : {};
+    // Loose, case-insensitive search across title, category and tags.
+    let where = '';
+    let params = [];
+    if (q) {
+      where = `(data->>'title' ILIKE $1 OR data->>'category' ILIKE $1 OR (data->'tags')::text ILIKE $1)`;
+      params = [`%${q}%`];
+    }
 
-    const [blogs, total] = await Promise.all([
-      Blog.find(filter, { content: 0 }).sort({ createdAt: -1 }).skip((page - 1) * limit).limit(limit).lean(),
-      Blog.countDocuments(filter),
+    const [items, total] = await Promise.all([
+      findMany('blogs', {
+        where, params,
+        orderBy: 'created_at DESC',
+        limit, offset: (page - 1) * limit,
+        omit: 'content',
+      }),
+      countDocs('blogs', where, params),
     ]);
 
-    return successResponse({ items: blogs, total, page, pages: Math.ceil(total / limit) });
+    return successResponse({ items, total, page, pages: Math.ceil(total / limit) });
   } catch {
     return errorResponse('Failed to fetch blogs', 500);
   }
@@ -32,7 +40,7 @@ export async function POST(request) {
   try {
     await connectDB();
     const body = await request.json();
-    const blog = await Blog.create(body);
+    const blog = await insertDoc('blogs', body);
     return successResponse(blog, 201);
   } catch (e) {
     return errorResponse(e.message || 'Failed to create blog', 500);

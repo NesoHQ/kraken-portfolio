@@ -1,7 +1,6 @@
 import { requireAdmin } from '@/lib/api/requireAdmin';
 import { successResponse, errorResponse } from '@/lib/api/response';
-import connectDB from '@/lib/db/mongoose';
-import Contact from '@/lib/db/models/Contact';
+import connectDB, { findMany, insertDoc } from '@/lib/db/pg';
 
 // Trusted personal/business email providers — blocks disposable/unknown domains
 const ALLOWED_DOMAINS = new Set([
@@ -46,7 +45,7 @@ export async function POST(request) {
       );
     }
 
-    const contact = await Contact.create(body);
+    const contact = await insertDoc('contacts', { read: false, ...body });
     return successResponse(contact, 201);
   } catch (e) {
     return errorResponse(e.message || 'Failed to submit', 500);
@@ -63,16 +62,20 @@ export async function GET(request) {
     const read = searchParams.get('read');
     const q    = searchParams.get('q') || '';
 
-    const filter = {};
-    if (read === 'false') filter.read = false;
-    if (read === 'true')  filter.read = true;
-    if (q) filter.$or = [
-      { fullname: { $regex: q, $options: 'i' } },
-      { email:    { $regex: q, $options: 'i' } },
-      { message:  { $regex: q, $options: 'i' } },
-    ];
+    const clauses = [];
+    const params = [];
+    if (read === 'false') clauses.push(`data->>'read' = 'false'`);
+    if (read === 'true')  clauses.push(`data->>'read' = 'true'`);
+    if (q) {
+      params.push(`%${q}%`);
+      clauses.push(`(data->>'fullname' ILIKE $${params.length} OR data->>'email' ILIKE $${params.length} OR data->>'message' ILIKE $${params.length})`);
+    }
 
-    const contacts = await Contact.find(filter).sort({ createdAt: -1 }).lean();
+    const contacts = await findMany('contacts', {
+      where: clauses.join(' AND '),
+      params,
+      orderBy: 'created_at DESC',
+    });
     return successResponse(contacts);
   } catch {
     return errorResponse('Failed to fetch', 500);
