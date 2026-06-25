@@ -13,47 +13,30 @@ const ICON_MAP = {
   Database: <Database size={32} />,
 };
 
-const STATIC = {
-  name: "Iqbal Hossain",
-  title: "Senior Software Engineer",
-  bio: [
-    "Senior Software Engineer with 3+ years developing fullstack and distributed systems serving in production. Expertise in Kubernetes, Docker, Terraform, and infrastructure automation.",
-    "Specialized in Golang and TypeScript with a strong focus on system reliability, observability, and cost-efficient architecture. Founder of NesoHQ, operating and managing open-source collaboration and infrastructure.",
-  ],
-  services: [
-    { title: "Backend Engineering", text: "Building scalable, distributed systems in Golang and TypeScript with a focus on reliability and performance.", icon: "Server" },
-    { title: "Cloud & DevOps", text: "Architecting cloud-native infrastructure with Kubernetes, Docker, and Terraform for automated, reproducible deployments.", icon: "Globe" },
-    { title: "CI/CD & Automation", text: "Designing automated pipelines with GitHub Actions and Jenkins, enabling rapid and confident daily releases.", icon: "GitBranch" },
-    { title: "Observability", text: "Implementing full observability stacks with Prometheus and Grafana for real-time monitoring and alerting.", icon: "Database" },
-  ],
-  techStack: [
-    { label: "Languages",   value: "Golang, TypeScript, Python, Bash" },
-    { label: "Containers",  value: "Docker, Kubernetes, K3s, Helm, EKS" },
-    { label: "IaC",         value: "Terraform, AWS CDK, Kustomization" },
-    { label: "Cloud",       value: "AWS, DigitalOcean, Hetzner" },
-    { label: "Observe",     value: "Prometheus, Grafana, Logging, Alerting" },
-    { label: "Databases",   value: "PostgreSQL, MySQL, MongoDB, Redis" },
-    { label: "Networking",  value: "Caddy, Nginx, Tailscale, Headscale" },
-    { label: "Frontend",    value: "React.js, Next.js, Tailwind CSS" },
-  ],
-  github:    "https://github.com/geomachine",
-  githubOrg: "https://github.com/nesohq",
-  linkedin:  "https://linkedin.com/in/geomachine",
-};
-
 export function About() {
-  const [data, setData] = useState(STATIC);
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch('/api/about')
       .then(r => r.json())
       .then(j => {
-        if (j.data && (j.data.bio?.length || j.data.services?.length)) {
-          setData({ ...STATIC, ...j.data });
-        }
+        setData(j.data ?? null)
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => setLoading(false));
   }, []);
+
+
+  if(loading) return (
+    <div className="animate-pulse space-y-4">
+      <div className="h-8 w-1/3 bg-card" />
+      <div className="h-4 w-full bg-card" />
+      <div className="h-4 w-5/6 bg-card" />
+    </div>
+  );
+
+  if(!data) return null;
 
   return (
     <article className={ARTICLE}>
@@ -66,7 +49,7 @@ export function About() {
 
       {/* Bio */}
       <section className="text-muted text-base lg:text-lg leading-relaxed space-y-6 font-light mb-12">
-        {(data.bio?.length ? data.bio : STATIC.bio).map((p, i) => (
+        {(data?.bio?.length ? data.bio : []).map((p, i) => (
           <p key={i}>{p}</p>
         ))}
       </section>
@@ -96,7 +79,7 @@ export function About() {
         <h3 className={SECTION_TITLE}><span className="text-2xl">✦</span> Open Source</h3>
         <div className="bg-card sketch-border p-6 hover:bg-primary-light transition-all duration-300">
           <div className="flex items-start justify-between flex-wrap gap-2 mb-3">
-            <a href={data.githubOrg || STATIC.githubOrg} target="_blank" rel="noopener noreferrer" className="font-signature font-bold text-2xl text-foreground hover:underline underline-offset-4">
+            <a href={data?.githubOrg} target="_blank" rel="noopener noreferrer" className="font-signature font-bold text-2xl text-foreground hover:underline underline-offset-4">
               NesoHQ — Open Innovation Community
             </a>
             <span className="text-xs font-bold text-muted tracking-widest uppercase sketch-border px-3 py-1 bg-background">2022 — Present</span>

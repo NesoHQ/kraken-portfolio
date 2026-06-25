@@ -4,20 +4,8 @@ import { useEffect, useState } from 'react';
 
 const ARTICLE = "active bg-card sketch-border paper-pattern p-6 lg:p-8 transition-all duration-500 relative z-10 block animate-[fadeIn_0.4s_ease_forwards]";
 
-const STATIC_PROJECTS = [
-  { title: "Finance",      category: "Web development", img: "/old/assets/images/project-1.jpg" },
-  { title: "Orizon",       category: "Web development", img: "/old/assets/images/project-2.png" },
-  { title: "Fundo",        category: "Web design",      img: "/old/assets/images/project-3.jpg" },
-  { title: "Brawlhalla",   category: "Applications",    img: "/old/assets/images/project-4.png" },
-  { title: "DSM.",         category: "Web design",      img: "/old/assets/images/project-5.png" },
-  { title: "MetaSpark",    category: "Web design",      img: "/old/assets/images/project-6.png" },
-  { title: "Summary",      category: "Web development", img: "/old/assets/images/project-7.png" },
-  { title: "Task Manager", category: "Applications",    img: "/old/assets/images/project-8.jpg" },
-  { title: "Arrival",      category: "Web development", img: "/old/assets/images/project-9.png" },
-];
-
 export function Portfolio({ filter, setFilter }) {
-  const [projects, setProjects] = useState(STATIC_PROJECTS);
+  const [projects, setProjects] = useState(null);
 
   useEffect(() => {
     fetch('/api/projects')
@@ -29,7 +17,7 @@ export function Portfolio({ filter, setFilter }) {
       .catch(() => {});
   }, []);
 
-  const categories = ['All', ...Array.from(new Set(projects.map(p => p.category)))];
+  const categories = ['All', ...Array.from(new Set(projects?.map(p => p.category)))];
   const filtered = filter === 'All' ? projects : projects.filter(p => p.category === filter);
 
   return (
@@ -55,7 +43,7 @@ export function Portfolio({ filter, setFilter }) {
       </ul>
 
       <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filtered.map((project, idx) => (
+        {filtered?.map((project, idx) => (
           <li key={project._id || idx} className="group">
             <ProjectCard project={project} />
           </li>
