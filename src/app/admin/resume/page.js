@@ -6,10 +6,15 @@ import { Btn, Field, Input, Textarea, useToast } from '@/components/admin/ui';
 
 // Controlled input that lets you type freely (with spaces) and only parses on blur
 function SkillTagsInput({ value, onChange, placeholder }) {
+  const joined = value.join(',');
   const [raw, setRaw] = useState(value.join(', '));
+  const [prevJoined, setPrevJoined] = useState(joined);
 
-  // Sync if parent resets (e.g. on load)
-  useEffect(() => { setRaw(value.join(', ')); }, [value.join(',')]);
+  // Re-sync if parent resets (e.g. on load) — adjust during render, not in an effect
+  if (joined !== prevJoined) {
+    setPrevJoined(joined);
+    setRaw(value.join(', '));
+  }
 
   return (
     <Input
