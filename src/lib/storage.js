@@ -13,8 +13,9 @@ const client = new S3Client({
 const BUCKET  = process.env.RUSTFS_BUCKET  || 'portfolio';
 const PUB_URL = process.env.RUSTFS_PUBLIC_URL || process.env.RUSTFS_ENDPOINT;
 
-const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml'];
-const MAX_BYTES = 5 * 1024 * 1024; // 5 MB
+const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml', 'application/pdf'];
+const MAX_BYTES = 5 * 1024 * 1024;       // 5 MB for images
+const MAX_BYTES_PDF = 10 * 1024 * 1024;  // 10 MB for PDFs (resumes)
 
 /**
  * Upload a Web API File to RustFS.
@@ -26,8 +27,9 @@ export async function uploadFile(file, folder = 'uploads') {
   if (!ALLOWED_TYPES.includes(file.type)) {
     throw new Error(`File type not allowed. Use: ${ALLOWED_TYPES.join(', ')}`);
   }
-  if (file.size > MAX_BYTES) {
-    throw new Error('File too large. Max 5 MB.');
+  const limit = file.type === 'application/pdf' ? MAX_BYTES_PDF : MAX_BYTES;
+  if (file.size > limit) {
+    throw new Error(`File too large. Max ${limit / 1024 / 1024} MB.`);
   }
 
   const ext      = file.name.split('.').pop().toLowerCase();

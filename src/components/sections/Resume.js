@@ -34,7 +34,7 @@ export function Resume() {
       </header>
 
       {/* Projects */}
-      <section className="mb-12">
+      { data?.infraProjects?.length > 0 && <section className="mb-12">
         <div className="flex items-center gap-4 mb-6">
           <div className="w-12 h-12 bg-card sketch-border flex items-center justify-center text-foreground"><GraduationCap size={24} /></div>
           <h3 className="text-3xl lg:text-4xl font-signature font-bold text-foreground">Projects</h3>
@@ -49,7 +49,7 @@ export function Resume() {
             </li>
           ))}
         </ol>
-      </section>
+      </section> }
 
       {/* Experience */}
       <section className="mb-12">

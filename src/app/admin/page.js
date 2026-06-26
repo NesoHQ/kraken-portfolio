@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { FileText, User, Briefcase, MessageSquare, Loader2, TrendingUp } from 'lucide-react';
+import { FileText, User, MessageSquare, Loader2, TrendingUp, Download } from 'lucide-react';
 
 function StatCard({ label, value, sub, href, icon: Icon, loading }) {
   return (
@@ -62,11 +62,11 @@ export default function AdminDashboard() {
       icon: User,
     },
     {
-      label: 'Resume',
-      value: '1',
-      sub: 'Experience & skills',
-      href: '/admin/resume',
-      icon: Briefcase,
+      label: 'Resume Downloads',
+      value: stats?.resumeDownloads ?? 0,
+      sub: 'Sidebar button clicks',
+      href: '/admin/about',
+      icon: Download,
     },
   ];
 
@@ -120,6 +120,10 @@ export default function AdminDashboard() {
               <span className={`font-bold ${stats?.unreadMessages ? 'text-foreground' : 'text-muted'}`}>
                 {loading ? '—' : stats?.unreadMessages ?? 0}
               </span>
+            </div>
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-muted">Resume downloads</span>
+              <span className="font-bold text-foreground">{loading ? '—' : stats?.resumeDownloads ?? 0}</span>
             </div>
           </div>
         </div>

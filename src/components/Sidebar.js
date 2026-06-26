@@ -44,10 +44,10 @@ export function Sidebar() {
 
   return (
     <>
-      <aside className={`bg-sidebar border-2 border-card-border sketch-border paper-pattern p-4 lg:p-6 transition-[max-height] duration-500 ease-in-out relative z-10 lg:sticky lg:top-[60px] lg:mb-0 lg:w-[280px] lg:shrink-0 lg:flex lg:flex-col lg:justify-center lg:max-h-[calc(100vh-120px)] lg:overflow-y-auto custom-scrollbar overflow-hidden ${isActive ? 'max-h-[800px]' : 'max-h-[110px]'}`}>
+      <aside className={`bg-sidebar border-2 border-card-border sketch-border paper-pattern p-4 lg:p-6 transition-[max-height] duration-500 ease-in-out relative z-10 lg:sticky lg:top-[60px] lg:mb-0 lg:w-[280px] lg:shrink-0 lg:flex lg:flex-col lg:max-h-[calc(100vh-120px)] lg:overflow-y-auto custom-scrollbar overflow-hidden ${isActive ? 'max-h-[800px]' : 'max-h-[110px]'}`}>
 
       {/* Top info */}
-      <div className="sidebar-info flex items-center gap-[20px] relative lg:block lg:text-center">
+      <div className="sidebar-info flex items-center gap-[20px] relative lg:block lg:text-center lg:mt-auto">
         <div className="relative w-[70px] h-[70px] lg:w-[130px] lg:h-[130px] lg:mx-auto">
           <figure className="relative bg-card sketch-border w-full h-full overflow-hidden flex items-center justify-center p-1 z-10 group cursor-pointer transition-all duration-300 group-hover:bg-primary-light">
             <img
@@ -76,20 +76,34 @@ export function Sidebar() {
       </div>
 
       {/* Expandable section */}
-      <div className={`sidebar-info_more ${isActive ? 'block' : 'hidden'} lg:block transition-all duration-500`}>
+      <div className={`sidebar-info_more ${isActive ? 'block' : 'hidden'} lg:block lg:mb-auto transition-all duration-500`}>
         <div className="h-px bg-border my-6" />
 
-        {/* Download Resume */}
-        <button
-          type="button"
-          onClick={() => setResumeModal(true)}
-          className="flex items-center justify-center gap-2 w-full bg-foreground text-background py-3 px-4 sketch-border font-signature font-bold text-lg transition-all duration-300 hover:bg-primary-hover hover:scale-105 active:scale-95 mb-6 group focus:outline-none focus:ring-2 focus:ring-foreground focus:ring-offset-2 focus:ring-offset-sidebar"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5 group-hover:translate-y-1 transition-transform">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
-          </svg>
-          Download Resume
-        </button>
+        {/* Download Resume — links to the admin-uploaded file, else opens the "ask me" modal */}
+        {data?.resumeUrl ? (
+          <a
+            href="/api/resume/download"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center gap-2 w-full bg-foreground text-background py-3 px-4 sketch-border font-signature font-bold text-lg transition-all duration-300 hover:bg-primary-hover hover:scale-105 active:scale-95 mb-6 group focus:outline-none focus:ring-2 focus:ring-foreground focus:ring-offset-2 focus:ring-offset-sidebar"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5 group-hover:translate-y-1 transition-transform">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+            </svg>
+            Download Resume
+          </a>
+        ) : (
+          <button
+            type="button"
+            onClick={() => setResumeModal(true)}
+            className="flex items-center justify-center gap-2 w-full bg-foreground text-background py-3 px-4 sketch-border font-signature font-bold text-lg transition-all duration-300 hover:bg-primary-hover hover:scale-105 active:scale-95 mb-6 group focus:outline-none focus:ring-2 focus:ring-foreground focus:ring-offset-2 focus:ring-offset-sidebar"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5 group-hover:translate-y-1 transition-transform">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+            </svg>
+            Download Resume
+          </button>
+        )}
 
         {/* Resume unavailable modal */}
         {resumeModal && (
@@ -150,11 +164,12 @@ export function Sidebar() {
           ))}
         </ul>
 
-        {/* Use this template — split button */}
+        {/* Use this template — split button (only when a template repo URL is set in admin) */}
+        {data?.templateRepo && (
         <div className="mt-5 flex sketch-border overflow-hidden">
           {/* Left — use template */}
           <a
-            href="https://github.com/geomachine/portfolio"
+            href={data.templateRepo}
             target="_blank"
             rel="noopener noreferrer"
             className="flex-1 flex items-center gap-2.5 bg-foreground text-background px-3 py-3 hover:opacity-90 active:scale-95 transition-all duration-200 focus:outline-none group"
@@ -173,7 +188,7 @@ export function Sidebar() {
 
           {/* Right — star */}
           <a
-            href="https://github.com/geomachine/portfolio"
+            href={data.templateRepo}
             target="_blank"
             rel="noopener noreferrer"
             title="Star this repo on GitHub"
@@ -185,6 +200,7 @@ export function Sidebar() {
             <span className="text-[9px] font-bold tracking-widest uppercase opacity-70 leading-none">Star</span>
           </a>
         </div>
+        )}
 
       </div>
     </aside>

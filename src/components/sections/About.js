@@ -75,26 +75,32 @@ export function About() {
       )}
 
       {/* Open Source */}
-      <section className="mb-12">
-        <h3 className={SECTION_TITLE}><span className="text-2xl">✦</span> Open Source</h3>
-        <div className="bg-card sketch-border p-6 hover:bg-primary-light transition-all duration-300">
-          <div className="flex items-start justify-between flex-wrap gap-2 mb-3">
-            <a href={data?.githubOrg} target="_blank" rel="noopener noreferrer" className="font-signature font-bold text-2xl text-foreground hover:underline underline-offset-4">
-              NesoHQ — Open Innovation Community
-            </a>
-            <span className="text-xs font-bold text-muted tracking-widest uppercase sketch-border px-3 py-1 bg-background">2022 — Present</span>
+      {(data.openSource?.title || data.openSource?.points?.length > 0) && (
+        <section className="mb-12">
+          <h3 className={SECTION_TITLE}><span className="text-2xl">✦</span> Open Source</h3>
+          <div className="bg-card sketch-border p-6 hover:bg-primary-light transition-all duration-300">
+            <div className="flex items-start justify-between flex-wrap gap-2 mb-3">
+              {data.githubOrg ? (
+                <a href={data.githubOrg} target="_blank" rel="noopener noreferrer" className="font-signature font-bold text-2xl text-foreground hover:underline underline-offset-4">
+                  {data.openSource.title}
+                </a>
+              ) : (
+                <span className="font-signature font-bold text-2xl text-foreground">{data.openSource.title}</span>
+              )}
+              {data.openSource.period && (
+                <span className="text-xs font-bold text-muted tracking-widest uppercase sketch-border px-3 py-1 bg-background">{data.openSource.period}</span>
+              )}
+            </div>
+            {data.openSource.points?.length > 0 && (
+              <ul className="space-y-2 text-sm lg:text-base text-muted font-light leading-relaxed">
+                {data.openSource.points.map((item, i) => (
+                  <li key={i} className="flex gap-2"><span className="text-foreground mt-1 shrink-0">—</span>{item}</li>
+                ))}
+              </ul>
+            )}
           </div>
-          <ul className="space-y-2 text-sm lg:text-base text-muted font-light leading-relaxed">
-            {[
-              "Founder and Infrastructure Lead, operating production-grade private cloud infrastructure for a distributed open-source community.",
-              "Architected cost-efficient hybrid cloud using K3s Kubernetes, Caddy reverse proxy, and Tailscale overlay networking.",
-              "Mentored developers on cloud-native practices, Kubernetes deployments, and infrastructure automation.",
-            ].map((item, i) => (
-              <li key={i} className="flex gap-2"><span className="text-foreground mt-1 shrink-0">—</span>{item}</li>
-            ))}
-          </ul>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Tech Stack */}
       {data.techStack?.length > 0 && (
