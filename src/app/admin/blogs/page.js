@@ -20,17 +20,34 @@ const schema = z.object({
 
 function BlogModal({ open, onClose, selected, onSaved, toast }) {
   const [loading, setLoading] = useState(false);
+  const [fetching, setFetching] = useState(false);
   const [apiError, setApiError] = useState('');
   const { register, handleSubmit, reset, control, formState: { errors } } = useForm({ resolver: zodResolver(schema) });
 
   useEffect(() => {
-    if (open) {
-      reset(selected ? {
-        title: selected.title, category: selected.category,
-        excerpt: selected.excerpt, content: selected.content,
-        tags: selected.tags?.join(', ') || '', image: selected.image || '',
-      } : { title: '', category: 'General', excerpt: '', content: '', tags: '', image: '' });
-      setApiError('');
+    if (!open) return;
+    setApiError('');
+
+    if (!selected) {
+      reset({ title: '', category: 'General', excerpt: '', content: '', tags: '', image: '' });
+      return;
+    }
+
+    const fill = (blog) => reset({
+      title: blog.title || '', category: blog.category || '',
+      excerpt: blog.excerpt || '', content: blog.content || '',
+      tags: blog.tags?.join(', ') || '', image: blog.image || '',
+    });
+
+    // The list omits `content`, so fetch the full post to populate the editor.
+    fill(selected);
+    if (selected.content === undefined) {
+      setFetching(true);
+      fetch(`/api/blogs/${selected._id}`)
+        .then(r => r.json())
+        .then(j => { if (j.data) fill(j.data); })
+        .catch(() => {})
+        .finally(() => setFetching(false));
     }
   }, [open, selected, reset]);
 
@@ -79,13 +96,19 @@ function BlogModal({ open, onClose, selected, onSaved, toast }) {
           <Textarea {...register('excerpt')} rows={2} placeholder="Short summary shown on the blog list" />
         </Field>
         <Field label="Content" error={errors.content?.message} required>
-          <Controller
-            name="content"
-            control={control}
-            render={({ field }) => (
-              <MarkdownEditor value={field.value} onChange={field.onChange} />
-            )}
-          />
+          {fetching ? (
+            <div className="py-12 text-center text-muted border-2 border-dashed border-card-border">
+              <Loader2 size={18} className="animate-spin mx-auto" />
+            </div>
+          ) : (
+            <Controller
+              name="content"
+              control={control}
+              render={({ field }) => (
+                <MarkdownEditor value={field.value} onChange={field.onChange} />
+              )}
+            />
+          )}
         </Field>
         {apiError && <p className="text-xs text-red-500 bg-red-500/10 px-3 py-2">{apiError}</p>}
         <div className="flex justify-end gap-3 pt-2 border-t border-dashed border-card-border">

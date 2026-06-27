@@ -119,7 +119,7 @@ export default async function BlogPostPage({ params }) {
 
   return (
     <div className="min-h-screen bg-background paper-pattern">
-      <div className="max-w-3xl mx-auto px-4 py-12 lg:py-16">
+      <div className="max-w-6xl mx-auto px-4 py-12 lg:py-16">
 
         {/* Back link */}
         <Link

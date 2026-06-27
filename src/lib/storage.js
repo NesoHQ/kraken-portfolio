@@ -1,4 +1,5 @@
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
 const client = new S3Client({
   endpoint:        process.env.RUSTFS_ENDPOINT,
@@ -45,4 +46,22 @@ export async function uploadFile(file, folder = 'uploads') {
   }));
 
   return `${PUB_URL}/${BUCKET}/${key}`;
+}
+
+/**
+ * Turn a stored public URL into a short-lived presigned GET URL.
+ * Garage (and most S3-compatible stores) refuse anonymous reads, so files are
+ * served via signed URLs instead of relying on a public bucket.
+ * @param {string} storedUrl  the URL returned by uploadFile()
+ * @param {number} expiresIn  seconds the link stays valid (default 5 min)
+ * @returns {Promise<string>} presigned URL
+ */
+export async function getDownloadUrl(storedUrl, expiresIn = 300) {
+  // Strip the public-URL/bucket prefix to recover the object key.
+  const prefix = `${PUB_URL}/${BUCKET}/`;
+  const key = storedUrl.startsWith(prefix)
+    ? storedUrl.slice(prefix.length)
+    : new URL(storedUrl).pathname.replace(/^\/+/, '').replace(new RegExp(`^${BUCKET}/`), '');
+
+  return getSignedUrl(client, new GetObjectCommand({ Bucket: BUCKET, Key: key }), { expiresIn });
 }

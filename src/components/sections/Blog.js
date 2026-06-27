@@ -21,7 +21,7 @@ function estimateReadTime(content) {
 }
 
 function BlogDetail({ blog, onBack }) {
-  const [full, setFull] = useState(null);
+  const [full, setFull] = useState(blog);
   const [loading, setLoading] = useState(!blog.content);
 
   useEffect(() => {
@@ -29,7 +29,7 @@ function BlogDetail({ blog, onBack }) {
     if (blog._id?.startsWith('static-') || blog.content) { setLoading(false); return; }
     fetch(`/api/blogs/${blog._id}`)
       .then(r => r.json())
-      .then(j => { if (j.data) setFull(j.data); })
+      .then(j => { if (j.data) setFull(prev => ({ ...prev, ...j.data })); })
       .catch(() => {})
       .finally(() => setLoading(false));
   }, [blog._id]);
