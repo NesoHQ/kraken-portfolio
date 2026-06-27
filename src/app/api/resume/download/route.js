@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/api/requireAdmin';
 import connectDB, { getSingleton, query } from '@/lib/db/pg';
+import { getDownloadUrl } from '@/lib/storage';
 
 // Public endpoint the "Download Resume" button points at. It records the hit on
 // the `about` singleton, then redirects to the actual file in storage — so every
@@ -28,8 +29,11 @@ export async function GET() {
       [about._id]
     );
 
-    return NextResponse.redirect(url, 302);
-  } catch {
+    // Garage refuses anonymous reads, so redirect to a short-lived signed URL.
+    const signedUrl = await getDownloadUrl(url);
+    return NextResponse.redirect(signedUrl, 302);
+  } catch (e) {
+    console.error('[resume/download] failed:', e.name, e.message);
     return NextResponse.json({ error: 'Failed to fetch resume' }, { status: 500 });
   }
 }

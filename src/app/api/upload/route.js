@@ -18,6 +18,7 @@ export async function POST(request) {
     const url = await uploadFile(file, folder);
     return successResponse({ url });
   } catch (e) {
+    console.error('[upload] failed:', e.name, e.message, e.$metadata?.httpStatusCode);
     return errorResponse(e.message || 'Upload failed', 500);
   }
 }
