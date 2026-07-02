@@ -1,8 +1,7 @@
 import { ArrowLeft, PenTool, Clock, Calendar } from 'lucide-react';
 import Link from 'next/link';
 import { MarkdownContent } from '@/components/admin/MarkdownEditor';
-import connectDB from '@/lib/db/mongoose';
-import Blog from '@/lib/db/models/Blog';
+import connectDB, { findById } from '@/lib/db/pg';
 
 // Static fallback data (same as Blog.js)
 const STATIC_BLOGS = [
@@ -82,9 +81,9 @@ async function getBlog(id) {
   }
   try {
     await connectDB();
-    const blog = await Blog.findById(id).lean();
+    const blog = await findById('blogs', id);
     if (!blog) return null;
-    return { ...blog, _id: blog._id.toString() };
+    return blog;
   } catch {
     return null;
   }
@@ -120,7 +119,7 @@ export default async function BlogPostPage({ params }) {
 
   return (
     <div className="min-h-screen bg-background paper-pattern">
-      <div className="max-w-3xl mx-auto px-4 py-12 lg:py-16">
+      <div className="max-w-6xl mx-auto px-4 py-12 lg:py-16">
 
         {/* Back link */}
         <Link

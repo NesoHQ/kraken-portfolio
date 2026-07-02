@@ -1,23 +1,12 @@
 "use client";
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 
 const ARTICLE = "active bg-card sketch-border paper-pattern p-6 lg:p-8 transition-all duration-500 relative z-10 block animate-[fadeIn_0.4s_ease_forwards]";
 
-const STATIC_PROJECTS = [
-  { title: "Finance",      category: "Web development", img: "/old/assets/images/project-1.jpg" },
-  { title: "Orizon",       category: "Web development", img: "/old/assets/images/project-2.png" },
-  { title: "Fundo",        category: "Web design",      img: "/old/assets/images/project-3.jpg" },
-  { title: "Brawlhalla",   category: "Applications",    img: "/old/assets/images/project-4.png" },
-  { title: "DSM.",         category: "Web design",      img: "/old/assets/images/project-5.png" },
-  { title: "MetaSpark",    category: "Web design",      img: "/old/assets/images/project-6.png" },
-  { title: "Summary",      category: "Web development", img: "/old/assets/images/project-7.png" },
-  { title: "Task Manager", category: "Applications",    img: "/old/assets/images/project-8.jpg" },
-  { title: "Arrival",      category: "Web development", img: "/old/assets/images/project-9.png" },
-];
-
 export function Portfolio({ filter, setFilter }) {
-  const [projects, setProjects] = useState(STATIC_PROJECTS);
+  const [projects, setProjects] = useState(null);
 
   useEffect(() => {
     fetch('/api/projects')
@@ -26,10 +15,10 @@ export function Portfolio({ filter, setFilter }) {
         const items = j.data;
         if (Array.isArray(items) && items.length) setProjects(items);
       })
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
-  const categories = ['All', ...Array.from(new Set(projects.map(p => p.category)))];
+  const categories = ['All', ...Array.from(new Set(projects?.map(p => p.category)))];
   const filtered = filter === 'All' ? projects : projects.filter(p => p.category === filter);
 
   return (
@@ -41,26 +30,29 @@ export function Portfolio({ filter, setFilter }) {
         </h2>
       </header>
 
-      <ul className="flex gap-6 md:gap-10 mb-10 overflow-x-auto pb-4 scrollbar-hide border-b-2 border-foreground border-dashed">
-        {categories.map(f => (
-          <li key={f} className="shrink-0">
-            <button
-              onClick={() => setFilter(f)}
-              className={`text-lg lg:text-xl font-signature font-bold pb-2 border-b-[3px] transition-all duration-300 whitespace-nowrap ${filter === f ? 'text-foreground border-foreground scale-105' : 'text-muted border-transparent hover:text-foreground hover:border-border'}`}
-            >
-              {f}
-            </button>
-          </li>
-        ))}
-      </ul>
+      {categories?.length > 1 &&
+        <div>
+          <ul className="flex gap-6 md:gap-10 mb-10 overflow-x-auto pb-4 scrollbar-hide     border-b-2 border-foreground border-dashed">
+            {categories.map(f => (
+              <li key={f} className="shrink-0">
+                <button
+                  onClick={() => setFilter(f)}
+                  className={`text-lg lg:text-xl font-signature font-bold pb-2 border-b-[3px] transition-all duration-300 whitespace-nowrap ${filter === f ? 'text-foreground border-foreground scale-105' : 'text-muted border-transparent hover:text-foreground hover:border-border'}`}
+                >
+                  {f}
+                </button>
+              </li>
+            ))}
+          </ul>
 
-      <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filtered.map((project, idx) => (
-          <li key={project._id || idx} className="group">
-            <ProjectCard project={project} />
-          </li>
-        ))}
-      </ul>
+          <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filtered?.map((project, idx) => (
+              <li key={project._id || idx} className="group">
+                <ProjectCard project={project} />
+              </li>
+            ))}
+          </ul>
+        </div>}
     </article>
   );
 }
@@ -86,7 +78,13 @@ function ProjectCard({ project }) {
           </div>
         )}
         {project.img
-          ? <img src={project.img} alt={project.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out" />
+          ? <Image
+            src={project.img}
+            alt={project.title}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+          />
           : <div className="w-full h-full bg-primary-light flex items-center justify-center text-muted text-xs font-bold uppercase tracking-widest">{project.category}</div>
         }
       </figure>

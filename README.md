@@ -1,32 +1,34 @@
-# kraken — Personal Portfolio
+# ArmanRuhit — Personal Portfolio
 
 A full-stack, self-hosted personal portfolio built with Next.js 16. Fully dynamic with an admin panel, markdown blog, image uploads, and Docker-based deployment.
 
-[![Build and Push](https://github.com/geomachine/portfolio/actions/workflows/build-and-push.yml/badge.svg)](https://github.com/geomachine/portfolio/actions/workflows/build-and-push.yml)
+[![Build and Push](https://github.com/ArmanRuhit/portfolio/actions/workflows/build-and-push.yml/badge.svg)](https://github.com/ArmanRuhit/portfolio/actions/workflows/build-and-push.yml)
 
 ---
 
 ## LIVE
 
-> **[→ View Live portfolio](https://kraken.nesohq.org/)** — deployed portfolio for public views.
+> **[→ View Live portfolio](https://portfolio.apps.armanruhit.dev/)** — deployed portfolio for public views.
 
 ---
 
 ## Preview
 
-> **[→ View interactive slideshow](https://nesohq.github.io/kraken-portfolio/)** — portfolio sections and admin panel, dark & light.
+> **[→ View interactive slideshow](https://armanruhit.github.io/portfolio/)** — portfolio sections and admin panel, dark & light. _(served from `docs/` via GitHub Pages)_
 
 ---
 
 ## Features
 
-- **Dynamic content** — all sections (about, resume, projects, blog, contact) are managed via a built-in admin panel and stored in MongoDB
+- **Dynamic content** — all sections (about, resume, projects, blog, contact) are managed via a built-in admin panel and stored in PostgreSQL (JSONB)
 - **Markdown blog** — rich markdown editor with GFM support, live preview, syntax highlighting, and dedicated post pages (`/blog/[id]`)
 - **Image uploads** — drag-and-drop or URL paste, uploaded to any S3-compatible storage (RustFS, MinIO, AWS S3)
+- **Resume upload & download tracking** — upload a PDF in the admin panel; the sidebar "Download Resume" button serves it and counts downloads, shown on the dashboard
 - **Admin panel** — protected by JWT session, full CRUD for all content
 - **Email validation** — contact form only accepts verified providers (Gmail, Outlook, Yahoo, iCloud, ProtonMail, etc.)
+- **OpenStreetMap contact map** — keyless, no-tracking embed (no Google Maps API key required)
 - **Sketch/dashed theme** — hand-drawn aesthetic with dark/light mode toggle
-- **Static fallbacks** — all sections fall back to static data if the API is unavailable
+- **Database as single source of truth** — every section renders only from PostgreSQL, with honest loading states and no flash of placeholder data
 - **Docker ready** — multi-arch image (`amd64` + `arm64`) published to GHCR on every push to `main`
 
 ---
@@ -37,7 +39,7 @@ A full-stack, self-hosted personal portfolio built with Next.js 16. Fully dynami
 |---|---|
 | Framework | Next.js 16 (App Router) |
 | Language | JavaScript (React 19) |
-| Database | MongoDB via Mongoose |
+| Database | PostgreSQL (JSONB) via node-postgres |
 | Auth | JWT + HTTP-only cookies |
 | Storage | S3-compatible (RustFS / MinIO / AWS S3) |
 | Styling | Tailwind CSS v4 |
@@ -53,14 +55,14 @@ A full-stack, self-hosted personal portfolio built with Next.js 16. Fully dynami
 ### Prerequisites
 
 - Node.js 20+
-- MongoDB (local or Atlas)
+- PostgreSQL 13+ (local or hosted, e.g. Neon/Supabase)
 - An S3-compatible storage bucket (optional — image uploads won't work without it)
 
 ### Local Development
 
 ```bash
 # 1. Clone the repo
-git clone https://github.com/geomachine/portfolio.git
+git clone https://github.com/ArmanRuhit/portfolio.git
 cd portfolio
 
 # 2. Install dependencies
@@ -70,13 +72,15 @@ npm install
 cp .env.local.example .env.local
 # Edit .env.local with your values
 
-# 4. Start MongoDB (Docker)
+# 4. Start PostgreSQL (Docker)
 docker run -d \
-  --name mongodb \
-  -p 27017:27017 \
-  -e MONGO_INITDB_DATABASE=portfolio \
-  -v mongodb_data:/data/db \
-  mongo:7
+  --name postgres \
+  -p 5432:5432 \
+  -e POSTGRES_USER=postgres \
+  -e POSTGRES_PASSWORD=postgres \
+  -e POSTGRES_DB=portfolio \
+  -v postgres_data:/var/lib/postgresql/data \
+  postgres:16
 
 # 5. Start the dev server
 npm run dev
@@ -90,8 +94,8 @@ Admin panel is at [http://localhost:3000/admin](http://localhost:3000/admin).
 ## Environment Variables
 
 ```env
-# MongoDB
-MONGODB_URI=mongodb://localhost:27017/portfolio
+# PostgreSQL
+DATABASE_URL=postgres://postgres:postgres@localhost:5432/portfolio
 
 # Admin credentials
 ADMIN_EMAIL=admin@example.com
@@ -123,8 +127,8 @@ docker run -p 3000:3000 --env-file .env.local portfolio
 ### Pull from GHCR
 
 ```bash
-docker pull ghcr.io/geomachine/portfolio:latest
-docker run -p 3000:3000 --env-file .env.local ghcr.io/geomachine/portfolio:latest
+docker pull ghcr.io/armanruhit/portfolio:latest
+docker run -p 3000:3000 --env-file .env.local ghcr.io/armanruhit/portfolio:latest
 ```
 
 ---
@@ -161,7 +165,7 @@ src/
 │   ├── sections/       # Portfolio sections (About, Resume, Blog, etc.)
 │   └── Sidebar.js      # Profile sidebar
 └── lib/
-    ├── db/             # Mongoose models + connection
+    ├── db/             # Postgres connection + JSONB document helpers
     ├── api/            # JWT, auth middleware, response helpers
     └── storage.js      # S3 upload utility
 ```
@@ -174,7 +178,7 @@ Want to use this as your own portfolio? Click **"Use this template"** on the sid
 
 1. Fork / use as template on GitHub
 2. Update `.env.local` with your credentials
-3. Edit the static fallback data in each section component
+3. Log in to `/admin` and enter your content (about, resume, projects, blog, contact) — it's stored in the database, no code edits needed
 4. Deploy via Docker or Vercel
 
 ---

@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from 'react';
 import { Loader2, Plus, Trash2 } from 'lucide-react';
 import { Btn, Field, Input, Textarea, useToast } from '@/components/admin/ui';
 import { ImageUpload } from '@/components/admin/ImageUpload';
+import { FileUpload } from '@/components/admin/FileUpload';
 
 const DEFAULT = {
   name: 'Iqbal Hossain', title: 'Senior Software Engineer',
@@ -46,6 +47,7 @@ export default function AdminAboutPage() {
       name: raw.name || '',
       title: raw.title || '',
       avatar: raw.avatar || '',
+      resumeUrl: raw.resumeUrl || '',
       bio: (raw.bio || []).map(p => String(p || '')),
       email: raw.email || '',
       phone: raw.phone || '',
@@ -53,12 +55,18 @@ export default function AdminAboutPage() {
       linkedin: raw.linkedin || '',
       github: raw.github || '',
       githubOrg: raw.githubOrg || '',
+      templateRepo: raw.templateRepo || '',
       services: (raw.services || []).map(s => ({
         title: s.title || '', text: s.text || '', icon: s.icon || '',
       })),
       techStack: (raw.techStack || []).map(t => ({
         label: t.label || '', value: t.value || '',
       })),
+      openSource: {
+        title: raw.openSource?.title || '',
+        period: raw.openSource?.period || '',
+        points: (raw.openSource?.points || []).map(p => String(p || '')),
+      },
     };
     setSaving(true);
     const res = await fetch('/api/about', {
@@ -72,6 +80,16 @@ export default function AdminAboutPage() {
   };
 
   const set = (key, val) => setDataSync({ ...dataRef.current, [key]: val });
+
+  const resetDownloads = async () => {
+    const res = await fetch('/api/resume/download', { method: 'POST' });
+    if (res.ok) {
+      setDataSync({ ...dataRef.current, resumeDownloads: 0 });
+      toast.show('Download count reset.');
+    } else {
+      toast.show('Failed to reset count.', 'error');
+    }
+  };
 
   const deleteItem = (key, i) => {
     const next = { ...dataRef.current, [key]: dataRef.current[key].filter((_, j) => j !== i) };
@@ -105,6 +123,20 @@ export default function AdminAboutPage() {
         <Field label="Avatar">
           <ImageUpload value={data.avatar || ''} onChange={val => set('avatar', val)} folder="avatars" />
         </Field>
+        <Field label="Resume (PDF)">
+          <FileUpload value={data.resumeUrl || ''} onChange={val => set('resumeUrl', val)} folder="resume" hint="PDF — max 10 MB · leave empty to keep the “ask me” message" />
+          <div className="flex items-center justify-between text-xs text-muted pt-2">
+            <span>Downloaded <span className="font-bold text-foreground">{data.resumeDownloads ?? 0}</span> times</span>
+            <button
+              type="button"
+              onClick={resetDownloads}
+              disabled={!data.resumeDownloads}
+              className="font-bold tracking-widest uppercase text-muted hover:text-red-500 transition-colors disabled:opacity-40 disabled:hover:text-muted disabled:cursor-not-allowed"
+            >
+              Reset to 0
+            </button>
+          </div>
+        </Field>
       </section>
 
       {/* Bio */}
@@ -134,6 +166,9 @@ export default function AdminAboutPage() {
           <Field label="GitHub"><Input value={data.github} onChange={e => set('github', e.target.value)} /></Field>
           <Field label="GitHub Org"><Input value={data.githubOrg} onChange={e => set('githubOrg', e.target.value)} /></Field>
         </div>
+        <Field label="Portfolio Template Repo">
+          <Input value={data.templateRepo || ''} onChange={e => set('templateRepo', e.target.value)} placeholder="https://github.com/you/portfolio — leave empty to hide “Use this template” in sidebar" />
+        </Field>
       </section>
 
       {/* Services */}
@@ -167,6 +202,27 @@ export default function AdminAboutPage() {
           </div>
         ))}
         <Btn variant="ghost" onClick={() => set('techStack', [...(data.techStack || []), { label: '', value: '' }])}><Plus size={14} /> Add Row</Btn>
+      </section>
+
+      {/* Open Source */}
+      <section className="bg-card border-2 border-card-border p-6 space-y-4">
+        <h2 className="font-signature font-bold text-lg text-foreground border-b border-card-border pb-2">Open Source</h2>
+        <p className="text-xs text-muted">Leave the title empty (and remove all points) to hide this section on the public page. The title links to the “GitHub Org” URL above.</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <Field label="Title"><Input value={data.openSource?.title || ''} onChange={e => set('openSource', { ...data.openSource, title: e.target.value })} placeholder="e.g. NesoHQ — Open Innovation Community" /></Field>
+          <Field label="Period"><Input value={data.openSource?.period || ''} onChange={e => set('openSource', { ...data.openSource, period: e.target.value })} placeholder="e.g. 2022 — Present" /></Field>
+        </div>
+        <Field label="Bullet Points">
+          <div className="space-y-2">
+            {(data.openSource?.points || []).map((pt, i) => (
+              <div key={i} className="flex gap-2">
+                <Textarea value={pt} rows={2} onChange={e => { const pts = [...(data.openSource?.points || [])]; pts[i] = e.target.value; set('openSource', { ...data.openSource, points: pts }); }} placeholder={`Point ${i + 1}`} className="flex-1" />
+                <button type="button" onClick={() => { const pts = (data.openSource?.points || []).filter((_, j) => j !== i); set('openSource', { ...data.openSource, points: pts }); }} className="text-muted hover:text-red-500 transition-colors shrink-0 mt-1"><Trash2 size={15} /></button>
+              </div>
+            ))}
+            <Btn variant="ghost" onClick={() => set('openSource', { ...data.openSource, points: [...(data.openSource?.points || []), ''] })}><Plus size={14} /> Add Point</Btn>
+          </div>
+        </Field>
       </section>
     </div>
   );

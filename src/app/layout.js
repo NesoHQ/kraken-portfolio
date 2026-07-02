@@ -24,11 +24,30 @@ const firaCode = Fira_Code({
 });
 
 export const metadata = {
-  title: "kraken - Personal Portfolio",
-  description: "THE Kraken's personalised portfolio nextjs application",
+  metadataBase: new URL('https://portfolio.apps.armanruhit.dev'),
+  title: "ArmanRuhit — Personal Portfolio",
+  description: "Personal portfolio of Arman Ruhit — full-stack developer. Projects, resume, blog, and contact.",
+  applicationName: "ArmanRuhit Portfolio",
+  authors: [{ name: "Arman Ruhit", url: "https://github.com/ArmanRuhit" }],
+  creator: "Arman Ruhit",
+  keywords: ["Arman Ruhit", "portfolio", "full-stack developer", "software engineer", "Next.js"],
   icons: {
-    icon: '/kraken.png',
-    apple: '/kraken.png',
+    icon: '/jenitsu.jpeg',
+    apple: '/jenitsu.jpeg',
+  },
+  openGraph: {
+    type: "website",
+    url: "https://portfolio.apps.armanruhit.dev",
+    siteName: "ArmanRuhit Portfolio",
+    title: "ArmanRuhit — Personal Portfolio",
+    description: "Personal portfolio of Arman Ruhit — full-stack developer. Projects, resume, blog, and contact.",
+    images: ['/jenitsu.jpeg'],
+  },
+  twitter: {
+    card: "summary",
+    title: "ArmanRuhit — Personal Portfolio",
+    description: "Personal portfolio of Arman Ruhit — full-stack developer. Projects, resume, blog, and contact.",
+    images: ['/jenitsu.jpeg'],
   },
 };
 
