@@ -75,7 +75,8 @@ export function Contact() {
       <section className="mb-12 sketch-border">
         <figure className="h-[300px] w-full bg-card p-1">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d233668.3263788778!2d90.27923950507813!3d23.780573000000007!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755b8b087026b81%3A0x8fa563bbdd5904c2!2sDhaka%2C%20Bangladesh!5e0!3m2!1sen!2sbd!4v1700000000000!5m2!1sen!2sbd"
+            title="Location map"
+            src="https://www.openstreetmap.org/export/embed.html?bbox=90.30%2C23.70%2C90.50%2C23.86&layer=mapnik&marker=23.7806%2C90.4074"
             width="600" height="450" loading="lazy"
             className="w-full h-full border-2 border-dashed border-foreground"
           />

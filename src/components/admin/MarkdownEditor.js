@@ -123,6 +123,11 @@ export function MarkdownEditor({ value = '', onChange }) {
  * Used in both admin preview and the public blog detail view.
  */
 export function MarkdownContent({ content = '' }) {
+  // Hashnode (and similar) emit `![](url align="center")`. The unquoted
+  // `align=...` after the URL isn't valid CommonMark, so strip it so the
+  // image/link parses normally.
+  const cleaned = content.replace(/(\]\([^)\s]+)\s+align="[^"]*"\)/g, '$1)');
+
   return (
     <ReactMarkdown
       remarkPlugins={[remarkGfm]}
@@ -155,11 +160,15 @@ export function MarkdownContent({ content = '' }) {
             {children}
           </blockquote>
         ),
-        code: ({ inline, children }) =>
-          inline
-            ? <code className="bg-primary-light text-foreground px-1.5 py-0.5 font-mono text-[0.85em] border border-dashed border-card-border">{children}</code>
-            : <code className="block bg-primary-light text-foreground p-4 font-mono text-sm leading-relaxed overflow-x-auto border-2 border-dashed border-card-border my-4 whitespace-pre">{children}</code>,
-        pre: ({ children }) => <>{children}</>,
+        // react-markdown v9 dropped the `inline` prop: inline code is a bare
+        // <code>, while fenced blocks are wrapped in <pre>. So style code as
+        // inline here and let the `pre` component handle block styling.
+        code: ({ children }) => <code className="bg-primary-light text-foreground px-1.5 py-0.5 font-mono text-[0.85em] border border-dashed border-card-border">{children}</code>,
+        pre: ({ children }) => (
+          <pre className="block bg-primary-light text-foreground p-4 font-mono text-sm leading-relaxed overflow-x-auto border-2 border-dashed border-card-border my-4 whitespace-pre [&>code]:bg-transparent [&>code]:border-0 [&>code]:p-0">
+            {children}
+          </pre>
+        ),
         hr:  () => <hr className="border-0 border-t-2 border-dashed border-card-border my-8" />,
         table: ({ children }) => (
           <div className="overflow-x-auto my-4">
@@ -169,15 +178,14 @@ export function MarkdownContent({ content = '' }) {
         thead: ({ children }) => <thead className="bg-foreground text-background">{children}</thead>,
         th: ({ children }) => <th className="px-4 py-2 text-left font-bold text-xs uppercase tracking-widest">{children}</th>,
         td: ({ children }) => <td className="px-4 py-2 border-t border-dashed border-card-border text-muted">{children}</td>,
+        // Rendered inline (no <figure>/<div> wrapper): markdown images live
+        // inside <p>, and a block element there is invalid HTML / hydration error.
         img: ({ src, alt }) => (
-          <figure className="my-6 sketch-border overflow-hidden">
-            <img src={src} alt={alt} className="w-full object-cover" />
-            {alt && <figcaption className="text-center text-xs text-muted py-2 border-t border-dashed border-card-border">{alt}</figcaption>}
-          </figure>
+          <img src={src} alt={alt} title={alt || undefined} className="inline-block w-full my-6 sketch-border overflow-hidden align-middle" />
         ),
       }}
     >
-      {content}
+      {cleaned}
     </ReactMarkdown>
   );
 }
