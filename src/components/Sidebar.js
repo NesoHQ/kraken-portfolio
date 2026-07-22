@@ -5,14 +5,14 @@ import { createPortal } from "react-dom";
 import { Mail, Smartphone, MapPin } from "lucide-react";
 
 const STATIC = {
-  name:      "Iqbal Hossain",
+  name:      "THE KRAKEN",
   title:     "Senior Software Engineer",
   avatar:    "/astha.jpeg",
   email:     "zafar.iq3089@gmail.com",
   phone:     "+880 1403229479",
   location:  "Dhaka-1230, Bangladesh",
-  linkedin:  "https://linkedin.com/in/geomachine",
-  github:    "https://github.com/geomachine",
+  linkedin:  "#",
+  github:    "#",
 };
 
 const GH_SVG = (

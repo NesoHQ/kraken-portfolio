@@ -2,7 +2,7 @@ import About from './models/About';
 import Resume from './models/Resume';
 
 const ABOUT_SEED = {
-  name: 'Iqbal Hossain',
+  name: 'THE KRAKEN',
   title: 'Senior Software Engineer',
   avatar: '/astha.jpeg',
   bio: [
@@ -12,9 +12,9 @@ const ABOUT_SEED = {
   email: 'zafar.iq3089@gmail.com',
   phone: '+880 1403229479',
   location: 'Dhaka-1230, Bangladesh',
-  linkedin: 'https://linkedin.com/in/geomachine',
-  github: 'https://github.com/geomachine',
-  githubOrg: 'https://github.com/nesohq',
+  linkedin: '#',
+  github: '#',
+  githubOrg: '#',
   services: [
     { title: 'Backend Engineering', icon: 'Server', text: 'Building scalable, distributed systems in Golang and TypeScript with a focus on reliability and performance.' },
     { title: 'Cloud & DevOps', icon: 'Globe', text: 'Architecting cloud-native infrastructure with Kubernetes, Docker, and Terraform for automated, reproducible deployments.' },

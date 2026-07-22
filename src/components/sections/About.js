@@ -14,7 +14,7 @@ const ICON_MAP = {
 };
 
 const STATIC = {
-  name: "Iqbal Hossain",
+  name: "THE KRAKEN",
   title: "Senior Software Engineer",
   bio: [
     "Senior Software Engineer with 3+ years developing fullstack and distributed systems serving in production. Expertise in Kubernetes, Docker, Terraform, and infrastructure automation.",
@@ -36,9 +36,9 @@ const STATIC = {
     { label: "Networking",  value: "Caddy, Nginx, Tailscale, Headscale" },
     { label: "Frontend",    value: "React.js, Next.js, Tailwind CSS" },
   ],
-  github:    "https://github.com/geomachine",
-  githubOrg: "https://github.com/nesohq",
-  linkedin:  "https://linkedin.com/in/geomachine",
+  github:    "#",
+  githubOrg: "#",
+  linkedin:  "#",
 };
 
 export function About() {

@@ -6,12 +6,12 @@ import { Btn, Field, Input, Textarea, useToast } from '@/components/admin/ui';
 import { ImageUpload } from '@/components/admin/ImageUpload';
 
 const DEFAULT = {
-  name: 'Iqbal Hossain', title: 'Senior Software Engineer',
+  name: 'THE KRAKEN', title: 'Senior Software Engineer',
   bio: ['', ''], email: 'zafar.iq3089@gmail.com',
   phone: '+880 1403229479', location: 'Dhaka-1230, Bangladesh',
-  linkedin: 'https://linkedin.com/in/geomachine',
-  github: 'https://github.com/geomachine',
-  githubOrg: 'https://github.com/nesohq',
+  linkedin: '#',
+  github: '#',
+  githubOrg: '#',
   services: [
     { title: 'Backend Engineering', text: '', icon: 'Server' },
     { title: 'Cloud & DevOps', text: '', icon: 'Globe' },

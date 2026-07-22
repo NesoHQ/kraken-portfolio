@@ -3,3 +3,5 @@
 ./next
 .next/
 .env.local
+.env
+.env.production
