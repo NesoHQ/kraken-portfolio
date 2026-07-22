@@ -31,10 +31,10 @@ services:
       - .env
     environment:
       NODE_ENV: production
-      PORT: 3000
+      PORT: ${APP_PORT:-3000}
       MONGODB_URI: mongodb://${MONGO_ROOT_USERNAME}:${MONGO_ROOT_PASSWORD}@mongodb:27017/${MONGO_DATABASE:-portfolio}?authSource=admin
     ports:
-      - "${APP_PORT:-3000}:3000"
+      - "${APP_PORT:-80}:3000"
     healthcheck:
       test: ["CMD", "wget", "--quiet", "--spider", "http://localhost:3000/"]
       interval: 30s
