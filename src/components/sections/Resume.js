@@ -84,7 +84,7 @@ export function Resume() {
           <h3 className="text-3xl lg:text-4xl font-signature font-bold text-foreground">Experience</h3>
         </div>
         <ol className="ml-6 border-l-2 border-foreground border-dashed pl-8 space-y-10">
-          {data.experience.map((item, idx) => (
+          {data.experience.filter(item => !item.hidden).map((item, idx) => (
             <li key={idx} className="relative group">
               <div className="absolute -left-[41px] top-[6px] w-[18px] h-[18px] bg-background border-[3px] border-foreground group-hover:bg-foreground transition-all duration-300" />
               <h4 className="font-signature font-bold text-2xl text-foreground mb-0.5">{item.title}</h4>

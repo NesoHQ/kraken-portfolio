@@ -5,6 +5,7 @@ const ExperienceSchema = new mongoose.Schema({
   company: { type: String, required: true },
   period:  { type: String, required: true },
   points:  { type: [String], default: [] },
+  hidden:  { type: Boolean, default: false },
 });
 
 const ProjectSchema = new mongoose.Schema({

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, useRef } from 'react';
-import { Loader2, Plus, Trash2 } from 'lucide-react';
+import { Loader2, Plus, Trash2, ChevronUp, ChevronDown, Eye, EyeOff } from 'lucide-react';
 import { Btn, Field, Input, Textarea, useToast } from '@/components/admin/ui';
 
 // Controlled input that lets you type freely (with spaces) and only parses on blur
@@ -23,7 +23,7 @@ function SkillTagsInput({ value, onChange, placeholder }) {
 
 const DEFAULT_RESUME = {
   experience: [
-    { title: 'Senior Software Engineer & Backend Lead', company: 'Zalmi Technology', period: 'Jan 2026 — Present', points: [''] },
+    { title: 'Senior Software Engineer & Backend Lead', company: 'Zalmi Technology', period: 'Jan 2026 — Present', points: [''], hidden: false },
   ],
   infraProjects: [
     { title: 'Private Hybrid Cloud — NesoHQ', period: '2022 — Present', text: '' },
@@ -61,6 +61,7 @@ export default function AdminResumePage() {
         company: e.company || '',
         period: e.period || '',
         points: (e.points || []).map(p => String(p || '')),
+        hidden: !!e.hidden,
       })),
       infraProjects: (raw.infraProjects || []).map(p => ({
         title: p.title || '',
@@ -93,6 +94,21 @@ export default function AdminResumePage() {
   const setExp = (i, key, val) => {
     const exp = [...dataRef.current.experience]; exp[i] = { ...exp[i], [key]: val };
     setDataSync({ ...dataRef.current, experience: exp });
+  };
+  const moveExp = (i, dir) => {
+    const exp = [...dataRef.current.experience];
+    const j = i + dir;
+    if (j < 0 || j >= exp.length) return;
+    [exp[i], exp[j]] = [exp[j], exp[i]];
+    const next = { ...dataRef.current, experience: exp };
+    setDataSync(next);
+    save(next);
+  };
+  const toggleExpHidden = (i) => {
+    const exp = [...dataRef.current.experience]; exp[i] = { ...exp[i], hidden: !exp[i].hidden };
+    const next = { ...dataRef.current, experience: exp };
+    setDataSync(next);
+    save(next);
   };
   const setPoint = (ei, pi, val) => {
     const exp = [...dataRef.current.experience]; const pts = [...exp[ei].points]; pts[pi] = val;
@@ -127,8 +143,16 @@ export default function AdminResumePage() {
       <section className="bg-card border-2 border-dashed border-card-border p-6 space-y-6">
         <h2 className="font-signature font-bold text-lg text-foreground border-b border-dashed border-card-border pb-2">Work Experience</h2>
         {data.experience.map((exp, i) => (
-          <div key={i} className="border border-dashed border-card-border p-4 space-y-3 relative">
-            <button type="button" onClick={() => deleteItem('experience', i)} className="absolute top-3 right-3 text-muted hover:text-red-500 transition-colors"><Trash2 size={14} /></button>
+          <div key={i} className={`border border-dashed border-card-border p-4 space-y-3 relative ${exp.hidden ? 'opacity-50' : ''}`}>
+            <div className="absolute top-3 right-3 flex items-center gap-1">
+              <button type="button" onClick={() => moveExp(i, -1)} disabled={i === 0} className="text-muted hover:text-foreground disabled:opacity-30 disabled:hover:text-muted transition-colors" title="Move up"><ChevronUp size={14} /></button>
+              <button type="button" onClick={() => moveExp(i, 1)} disabled={i === data.experience.length - 1} className="text-muted hover:text-foreground disabled:opacity-30 disabled:hover:text-muted transition-colors" title="Move down"><ChevronDown size={14} /></button>
+              <button type="button" onClick={() => toggleExpHidden(i)} className="text-muted hover:text-foreground transition-colors" title={exp.hidden ? 'Show on site' : 'Hide from site'}>
+                {exp.hidden ? <EyeOff size={14} /> : <Eye size={14} />}
+              </button>
+              <button type="button" onClick={() => deleteItem('experience', i)} className="text-muted hover:text-red-500 transition-colors" title="Delete"><Trash2 size={14} /></button>
+            </div>
+            {exp.hidden && <span className="text-[10px] font-bold uppercase tracking-widest text-muted">Hidden from site</span>}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <Field label="Job Title"><Input value={exp.title} onChange={e => setExp(i, 'title', e.target.value)} /></Field>
               <Field label="Company"><Input value={exp.company} onChange={e => setExp(i, 'company', e.target.value)} /></Field>
@@ -147,7 +171,7 @@ export default function AdminResumePage() {
             </Field>
           </div>
         ))}
-        <Btn variant="ghost" onClick={() => setDataSync({ ...dataRef.current, experience: [...dataRef.current.experience, { title: '', company: '', period: '', points: [''] }] })}>
+        <Btn variant="ghost" onClick={() => setDataSync({ ...dataRef.current, experience: [...dataRef.current.experience, { title: '', company: '', period: '', points: [''], hidden: false }] })}>
           <Plus size={14} /> Add Experience
         </Btn>
       </section>
