@@ -19,9 +19,8 @@ services:
       - portfolio-net
 
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: ghcr.io/nesohq/kraken-portfolio:${IMAGE_TAG:-latest}
+    pull_policy: always
     container_name: portfolio-app
     restart: always
     depends_on:
